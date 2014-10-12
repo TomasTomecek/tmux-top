@@ -8,3 +8,5 @@ run-load:
 
 all: load run-load
 
+clean:
+	rm ./load
