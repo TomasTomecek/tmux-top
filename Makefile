@@ -1,8 +1,10 @@
-default:
-	gcc main.c -o main -std=c11 -Wall -Wextra
+default: all
 
-run:
-	./main
+load: load.c
+	gcc load.c -o load -std=c11 -Wall -Wextra
 
-all: default run
+run-load:
+	./load
+
+all: load run-load
 
