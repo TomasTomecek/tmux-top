@@ -50,10 +50,11 @@ int cmp_func(const void * a, const void * b) {
 struct load_entry**
 init_load_list(char *args[], int count, int *entries_count) {
     *entries_count = 3;
+    printf("count = %d, entries_count = %d\n", count, *entries_count);
     if (count > 0) {
         *entries_count = count;
     }
-    printf("after if");
+    printf("after if\n");
 
     struct load_entry **entries = calloc(*entries_count, sizeof(struct load_entry*));
 
@@ -74,31 +75,41 @@ init_load_list(char *args[], int count, int *entries_count) {
         char *token, *string;
         char *triple[3];
         int loop_iteration;
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < *entries_count; i++) {
             string = strdup(args[i]);
-            printf("%s/n", string);
+            printf("%s\n", string);
             loop_iteration = 0;
             while ((token = strsep(&string, ",")) != NULL) {
-                triple[i] = token;
+                printf("token[%d] = %s\n", loop_iteration, token);
+                triple[i] = strdup(token);
                 ++loop_iteration;
             }
             entries[i] = (struct load_entry*) malloc(sizeof(struct load_entry));
-            entries[i]->fg = triple[1];
+            printf("T[0] = %s, T[1] = %s, T[2] = %s", triple[0], triple[1], triple[2]);
+            entries[i]->fg = strdup(triple[1]);
+            printf("fg = %s\n", entries[i]->fg);
             sscanf(triple[0], "%lf", &entries[i]->load_d);
+            printf("load = %.2f\n", entries[i]->load_d);
             if (loop_iteration == 3) {
-                entries[i]->bg = triple[2];
+                entries[i]->bg = strdup(triple[2]);
             } else {
                 entries[i]->bg = "";
             }
+            printf("bg = %s\n", entries[i]->bg);
+            printf("fg=%s, bg=%s, %.2f\n", entries[i]->fg, entries[i]->bg, entries[i]->load_d);
         }
     }
     // sort array
     qsort(entries, *entries_count, sizeof(struct load_entry*), cmp_func);
+    for (int i = 0; i < *entries_count; i++) {
+        printf("[%d] fg=%s, bg=%s, %.2f\n", i, entries[i]->fg, entries[i]->bg, entries[i]->load_d);
+    }
     return entries;
 }
 
 void
 print_load_item(struct load_entry **entries, int count, double cpus_d, double load_to_display, char * suffix) {
+    //
     // when you load/#cpus, you get an absolute load: lets not do that
     //double absolute_load = load_to_display / cpus_d * 100.0;
     for (int i = 0; i < count; i++) {
