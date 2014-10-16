@@ -50,11 +50,10 @@ int cmp_func(const void * a, const void * b) {
 struct load_entry**
 init_load_list(char *args[], int count, int *entries_count) {
     *entries_count = 3;
-    printf("count = %d, entries_count = %d\n", count, *entries_count);
+    //printf("count = %d, entries_count = %d\n", count, *entries_count);
     if (count > 0) {
         *entries_count = count;
     }
-    printf("after if\n");
 
     struct load_entry **entries = calloc(*entries_count, sizeof(struct load_entry*));
 
@@ -77,33 +76,33 @@ init_load_list(char *args[], int count, int *entries_count) {
         int loop_iteration;
         for (int i = 0; i < *entries_count; i++) {
             string = strdup(args[i]);
-            printf("%s\n", string);
+            //printf("%s\n", string);
             loop_iteration = 0;
             while ((token = strsep(&string, ",")) != NULL) {
-                printf("token[%d] = %s\n", loop_iteration, token);
-                triple[i] = strdup(token);
+                //printf("token[%d] = %s\n", loop_iteration, token);
+                triple[loop_iteration] = strdup(token);
                 ++loop_iteration;
             }
             entries[i] = (struct load_entry*) malloc(sizeof(struct load_entry));
-            printf("T[0] = %s, T[1] = %s, T[2] = %s", triple[0], triple[1], triple[2]);
+            //printf("T[0] = %s, T[1] = %s, T[2] = %s", triple[0], triple[1], triple[2]);
             entries[i]->fg = strdup(triple[1]);
-            printf("fg = %s\n", entries[i]->fg);
+            //printf("fg = %s\n", entries[i]->fg);
             sscanf(triple[0], "%lf", &entries[i]->load_d);
-            printf("load = %.2f\n", entries[i]->load_d);
+            //printf("load = %.2f\n", entries[i]->load_d);
             if (loop_iteration == 3) {
                 entries[i]->bg = strdup(triple[2]);
             } else {
                 entries[i]->bg = "";
             }
-            printf("bg = %s\n", entries[i]->bg);
-            printf("fg=%s, bg=%s, %.2f\n", entries[i]->fg, entries[i]->bg, entries[i]->load_d);
+            //printf("bg = %s\n", entries[i]->bg);
+            //printf("fg=%s, bg=%s, %.2f\n", entries[i]->fg, entries[i]->bg, entries[i]->load_d);
         }
     }
     // sort array
     qsort(entries, *entries_count, sizeof(struct load_entry*), cmp_func);
-    for (int i = 0; i < *entries_count; i++) {
+    /*for (int i = 0; i < *entries_count; i++) {
         printf("[%d] fg=%s, bg=%s, %.2f\n", i, entries[i]->fg, entries[i]->bg, entries[i]->load_d);
-    }
+    }*/
     return entries;
 }
 
@@ -198,7 +197,6 @@ main(int argc, char **argv) {
     argp_parse(&argp, argc, argv, 0, 0, &arguments);
 
     int entries_count = 0;
-    printf("#args = %d\n", arguments.args_count);
     struct load_entry **entries = init_load_list(arguments.args, arguments.args_count, &entries_count);
     print_load(entries, entries_count);
 
