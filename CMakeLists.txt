@@ -7,8 +7,13 @@ set(tmux-status-helpers_VERSION_MINOR 1)
 
 set(CMAKE_C_FLAGS "-std=c11 -Wall -Wextra")
 
-add_executable(load load.c)
+# load
+add_executable(load load.c display.c)
 install(TARGETS load DESTINATION bin)
+
+add_executable(mem mem.c display.c)
+install(TARGETS mem DESTINATION bin)
+
 enable_testing()
 add_test( NAME load_usage
     COMMAND load --help )
