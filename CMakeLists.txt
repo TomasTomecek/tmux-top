@@ -14,6 +14,9 @@ install(TARGETS load DESTINATION bin)
 add_executable(mem mem.c display.c)
 install(TARGETS mem DESTINATION bin)
 
+add_executable(io io.c display.c)
+install(TARGETS io DESTINATION bin)
+
 enable_testing()
 add_test( NAME load_usage
     COMMAND load --help )
