@@ -1,4 +1,5 @@
-tmux-status-helpers
-===================
+tmux-top
+========
+Monitoring information for your tmux status line.
 
-Helper binaries for tmux status line.
+_UNDER HEAVY DEVELOPMENT_
