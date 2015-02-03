@@ -16,7 +16,6 @@ func GetCPULoad() (one, five, fifteen float64) {
 	one, _ = strconv.ParseFloat(fields[0], 64)
 	five, _ = strconv.ParseFloat(fields[1], 64)
 	fifteen, _ = strconv.ParseFloat(fields[2], 64)
-	fmt.Println(one, five, fifteen)
 	return
 }
 

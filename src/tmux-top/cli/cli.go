@@ -1,17 +1,17 @@
 package main
 
 import (
-	"cliif/tmux_display"
-	"conf"
 	"fmt"
 	"github.com/codegangsta/cli"
-	"load"
 	"os"
+	"tmux-top/conf"
+	"tmux-top/display"
+	"tmux-top/load"
 )
 
-var configuration conf.Configuration = conf.LoadConfiguration()
+var configuration conf.Configuration = conf.LoadConf()
 
-func print_load() {
+func print_load(*cli.Context) {
 	one, five, fifteen := load.GetCPULoad()
 	fmt.Printf("%s %s %s",
 		tmux_display.DisplayFloat64(one, 2, configuration.Load.Intervals),

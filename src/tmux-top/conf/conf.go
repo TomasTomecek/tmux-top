@@ -1,4 +1,4 @@
-package main
+package conf
 
 import (
 	"encoding/json"
@@ -48,10 +48,10 @@ func (c *Configuration) GetConf(conf_module string) LoadConfiguration {
 }
 
 func loadConfFromFile(path string) []byte {
-	response, err := ioutil.ReadFile(path)
-	if err != nil {
+	response, _ := ioutil.ReadFile(path)
+	/*if err != nil {
 		fmt.Println("error:", err)
-	}
+	}*/
 	return response
 }
 
