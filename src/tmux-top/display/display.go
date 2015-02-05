@@ -9,6 +9,18 @@ import (
 	"tmux-top/conf"
 )
 
+func FormatNicely(num float64) string {
+	suffixes := []string{"", "K", "M", "G", "T", "P", "E", "Z"}
+	suffix := "B"
+	for _, unit := range suffixes {
+		if math.Abs(num) < 1024.0 {
+			return fmt.Sprintf("%3.1f%s%s", num, unit, suffix)
+		}
+		num = num / 1024.0
+	}
+	return fmt.Sprintf("%.1f%s%s", num, "Yi", suffix)
+}
+
 func DisplayString(value string, bg_color, fg_color string) (response string) {
 	response = fmt.Sprintf("[bg=%s,fg=%s]%s[bg=default,fg=default]", bg_color, fg_color, value)
 	return
