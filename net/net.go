@@ -23,20 +23,25 @@ func (s *NetStat) String() (response string) {
 }
 
 func read_net_stats(rx_path, tx_path string) (float64, float64) {
+	var rx_float, tx_float float64 = -1.0, -1.0
+	var err error
+
 	rx, err := ioutil.ReadFile(rx_path)
 	if err != nil {
 		fmt.Println(err)
 	}
-	rx_float, err := strconv.ParseFloat(strings.Trim(string(rx), "\n"), 64)
+	rx_float, err = strconv.ParseFloat(strings.Trim(string(rx), "\n"), 64)
 	if err != nil {
+		rx_float = -1.0
 		fmt.Println(err)
 	}
 	tx, err := ioutil.ReadFile(tx_path)
 	if err != nil {
 		fmt.Println(err)
 	}
-	tx_float, err := strconv.ParseFloat(strings.Trim(string(tx), "\n"), 64)
+	tx_float, err = strconv.ParseFloat(strings.Trim(string(tx), "\n"), 64)
 	if err != nil {
+		tx_float = -1.0
 		fmt.Println(err)
 	}
 	return rx_float, tx_float
