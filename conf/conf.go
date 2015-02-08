@@ -7,23 +7,23 @@ import (
 )
 
 type IntervalDisplay struct {
-	From     float64 `json:"from"`
-	To       float64 `json:"to"`
-	Bg_color string  `json:"bg_color"`
-	Fg_color string  `json:"fg_color"`
+	From    float64 `json:"from"`
+	To      float64 `json:"to"`
+	BgColor string  `json:"bg_color"`
+	FgColor string  `json:"fg_color"`
 }
 
 type NetIFConfiguration struct {
-	Alias          string `json:alias`
-	LabelColorFg   string `json:label_color_fg`
-	LabelColorBg   string `json:label_color_bg`
-	AddressColorFg string `json:address_color_fg`
-	AddressColorBg string `json:address_color_bg`
+	Alias          string `json:"alias"`
+	LabelColorFg   string `json:"label_color_fg"`
+	LabelColorBg   string `json:"label_color_bg"`
+	AddressColorFg string `json:"address_color_fg"`
+	AddressColorBg string `json:"address_color_bg"`
 }
 
 type NetConfiguration struct {
-	Interfaces map[string]NetIFConfiguration `json:interfaces`
-	Threshold  float64                       `json:threshold`
+	Interfaces map[string]NetIFConfiguration `json:"interfaces"`
+	Threshold  float64                       `json:"threshold"`
 	Intervals  []IntervalDisplay             `json:"intervals"`
 }
 
@@ -45,47 +45,6 @@ type Configuration struct {
 	Net  NetConfiguration  `json:"net"`
 	Mem  MemConfiguration  `json:"mem"`
 }
-
-var default_conf string = `
-{
-	"load": {
-		"intervals": [{
-			"to": 1.0,
-			"bg_color": "blue",
-			"fg_color": "black"
-		}]
-	},
-	"mem": {
-		"intervals": [{
-			"to": 1.0,
-			"bg_color": "blue",
-			"fg_color": "black"
-		}],
-		"separator": "|",
-		"separator_bg": "defult",
-		"separator_fg": "white",
-		"total_bg": "default",
-		"total_fg": "colour14"
-	},
-	"net": {
-		"interfaces": {
-			"wlp3s0": {
-				"alias": "E",
-				"label_color_fg": "white",
-				"label_color_bg": "default",
-				"address_color_fg": "blue",
-				"address_color_bg": "default"
-			}
-		},
-		"threshold": 0.0,
-		"intervals": [{
-			"to": 1.0,
-			"bg_color": "blue",
-			"fg_color": "black"
-		}]
-	}
-
-}`
 
 func (c *Configuration) GetConf(conf_module string) LoadConfiguration {
 	return c.Load

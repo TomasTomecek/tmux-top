@@ -56,7 +56,6 @@ func GetNetStats(iface_conf conf.NetConfiguration) []NetStat {
 	for _, intf := range ifs {
 		_, ok := iface_conf.Interfaces[intf.Name]
 		if !ok {
-			fmt.Printf("%s not requested\n", intf.Name)
 			continue
 		}
 		addrs, err := intf.Addrs()
@@ -91,11 +90,9 @@ func GetNetStats(iface_conf conf.NetConfiguration) []NetStat {
 					Rx:      rx_diff,
 					Tx:      tx_diff,
 				}
-				fmt.Println(s)
 				response = append(response, s)
 			}
 		}
 	}
-	fmt.Println(response)
 	return response
 }

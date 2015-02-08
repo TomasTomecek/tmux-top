@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/TomasTomecek/tmux-top/conf"
-	"github.com/TomasTomecek/tmux-top/display"
+	display "github.com/TomasTomecek/tmux-top/display"
 	"github.com/TomasTomecek/tmux-top/load"
 	"github.com/TomasTomecek/tmux-top/mem"
 	"github.com/TomasTomecek/tmux-top/net"
@@ -15,20 +15,20 @@ var configuration conf.Configuration = conf.LoadConf()
 
 func print_mem(*cli.Context) {
 	used, total := mem.GetMemStats()
-	separator := fmt.Sprintf("[bg=%s,fg=%s]%s[bg=default,fg=default]", configuration.Mem.SeparatorBg,
-		configuration.Mem.SeparatorFg, configuration.Mem.Separator)
+	separator := display.DisplayString(configuration.Mem.Separator, configuration.Mem.SeparatorBg,
+		configuration.Mem.SeparatorFg)
 	fmt.Printf("%s%s%s",
-		tmux_display.DisplayFloat64(used, 2, configuration.Mem.Intervals, true, "B"),
+		display.DisplayFloat64(used, 2, configuration.Mem.Intervals, true, "B"),
 		separator,
-		tmux_display.PrintFloat64(total, 2, configuration.Mem.TotalBg, configuration.Mem.TotalFg, true, "B"))
+		display.PrintFloat64(total, 2, configuration.Mem.TotalBg, configuration.Mem.TotalFg, true, "B"))
 }
 
 func print_load(*cli.Context) {
 	one, five, fifteen := load.GetCPULoad()
 	fmt.Printf("%s %s %s",
-		tmux_display.DisplayFloat64(one, 2, configuration.Load.Intervals, false, ""),
-		tmux_display.DisplayFloat64(five, 2, configuration.Load.Intervals, false, ""),
-		tmux_display.DisplayFloat64(fifteen, 2, configuration.Load.Intervals, false, ""))
+		display.DisplayFloat64(one, 2, configuration.Load.Intervals, false, ""),
+		display.DisplayFloat64(five, 2, configuration.Load.Intervals, false, ""),
+		display.DisplayFloat64(fifteen, 2, configuration.Load.Intervals, false, ""))
 }
 
 func print_net(*cli.Context) {
@@ -38,13 +38,15 @@ func print_net(*cli.Context) {
 		if label == "" {
 			label = net_stat.Name
 		}
-		fmt.Printf("%s %s U %s D %s",
-			tmux_display.DisplayString(label, configuration.Net.Interfaces[net_stat.Name].LabelColorBg,
+		fmt.Printf("%s %s %s %s %s %s",
+			display.DisplayString(label, configuration.Net.Interfaces[net_stat.Name].LabelColorBg,
 				configuration.Net.Interfaces[net_stat.Name].LabelColorFg),
-			tmux_display.DisplayString(net_stat.Address, configuration.Net.Interfaces[net_stat.Name].AddressColorBg,
+			display.DisplayString(net_stat.Address, configuration.Net.Interfaces[net_stat.Name].AddressColorBg,
 				configuration.Net.Interfaces[net_stat.Name].AddressColorFg),
-			tmux_display.DisplayFloat64(net_stat.Tx, 1, configuration.Net.Intervals, true, "B"),
-			tmux_display.DisplayFloat64(net_stat.Rx, 1, configuration.Net.Intervals, true, "B"),
+			display.DisplayString("U", "default", "white"),
+			display.DisplayFloat64(net_stat.Tx, 1, configuration.Net.Intervals, true, "B"),
+			display.DisplayString("D", "default", "white"),
+			display.DisplayFloat64(net_stat.Rx, 1, configuration.Net.Intervals, true, "B"),
 		)
 	}
 }
