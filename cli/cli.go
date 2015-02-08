@@ -5,6 +5,7 @@ import (
 	"github.com/TomasTomecek/tmux-top/conf"
 	"github.com/TomasTomecek/tmux-top/display"
 	"github.com/TomasTomecek/tmux-top/load"
+	"github.com/TomasTomecek/tmux-top/mem"
 	"github.com/TomasTomecek/tmux-top/net"
 	"github.com/codegangsta/cli"
 	"os"
@@ -12,12 +13,22 @@ import (
 
 var configuration conf.Configuration = conf.LoadConf()
 
+func print_mem(*cli.Context) {
+	used, total := mem.GetMemStats()
+	separator := fmt.Sprintf("[bg=%s,fg=%s]%s[bg=default,fg=default]", configuration.Mem.SeparatorBg,
+		configuration.Mem.SeparatorFg, configuration.Mem.Separator)
+	fmt.Printf("%s%s%s",
+		tmux_display.DisplayFloat64(used, 2, configuration.Mem.Intervals, true, "B"),
+		separator,
+		tmux_display.PrintFloat64(total, 2, configuration.Mem.TotalBg, configuration.Mem.TotalFg, true, "B"))
+}
+
 func print_load(*cli.Context) {
 	one, five, fifteen := load.GetCPULoad()
 	fmt.Printf("%s %s %s",
-		tmux_display.DisplayFloat64(one, 2, configuration.Load.Intervals),
-		tmux_display.DisplayFloat64(five, 2, configuration.Load.Intervals),
-		tmux_display.DisplayFloat64(fifteen, 2, configuration.Load.Intervals))
+		tmux_display.DisplayFloat64(one, 2, configuration.Load.Intervals, false, ""),
+		tmux_display.DisplayFloat64(five, 2, configuration.Load.Intervals, false, ""),
+		tmux_display.DisplayFloat64(fifteen, 2, configuration.Load.Intervals, false, ""))
 }
 
 func print_net(*cli.Context) {
@@ -32,8 +43,8 @@ func print_net(*cli.Context) {
 				configuration.Net.Interfaces[net_stat.Name].LabelColorFg),
 			tmux_display.DisplayString(net_stat.Address, configuration.Net.Interfaces[net_stat.Name].AddressColorBg,
 				configuration.Net.Interfaces[net_stat.Name].AddressColorFg),
-			tmux_display.DisplayFloat64(net_stat.Tx, 1, configuration.Net.Intervals),
-			tmux_display.DisplayFloat64(net_stat.Rx, 1, configuration.Net.Intervals),
+			tmux_display.DisplayFloat64(net_stat.Tx, 1, configuration.Net.Intervals, true, "B"),
+			tmux_display.DisplayFloat64(net_stat.Rx, 1, configuration.Net.Intervals, true, "B"),
 		)
 	}
 }
@@ -51,9 +62,15 @@ func main() {
 			Action:    print_net,
 		},
 		{
+			Name:      "mem",
+			ShortName: "m",
+			Usage:     "show memory stats ",
+			Action:    print_mem,
+		},
+		{
 			Name:      "load",
 			ShortName: "l",
-			Usage:     "show ",
+			Usage:     "show load",
 			Action:    print_load,
 		}}
 

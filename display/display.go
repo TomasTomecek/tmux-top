@@ -7,14 +7,34 @@ import (
 	"github.com/TomasTomecek/tmux-top/conf"
 	"math"
 	"strconv"
+	"strings"
 )
 
-func FormatNicely(num float64) string {
-	suffixes := []string{"", "K", "M", "G", "T", "P", "E", "Z"}
+// FIXME: error checking is non-existent
+func Dehumanize(num float64, unit string) float64 {
+	suffixes := map[string]int{"K": 1, "M": 2, "G": 3, "T": 4, "P": 5, "E": 6, "Z": 7}
 	suffix := "B"
+	var prefix string
+
+	if strings.HasSuffix(unit, suffix) {
+		prefix = unit[:len(unit)-1]
+	} else {
+		prefix = unit
+	}
+	prefix = strings.ToUpper(prefix)
+
+	return num * math.Pow(1024.0, float64(suffixes[prefix]))
+}
+
+func Humanize(num float64, precision int, suffix string) string {
+	suffixes := []string{"", "K", "M", "G", "T", "P", "E", "Z"}
+	if suffix == "" {
+		suffix = "B"
+	}
+	format_str := fmt.Sprintf("%%3.%df%%s%%s", precision)
 	for _, unit := range suffixes {
 		if math.Abs(num) < 1024.0 {
-			return fmt.Sprintf("%3.1f%s%s", num, unit, suffix)
+			return fmt.Sprintf(format_str, num, unit, suffix)
 		}
 		num = num / 1024.0
 	}
@@ -26,8 +46,13 @@ func DisplayString(value string, bg_color, fg_color string) (response string) {
 	return
 }
 
-func PrintFloat64(value float64, precision int, bg_color, fg_color string) (response string) {
-	float_str := strconv.FormatFloat(value, 'f', precision, 64)
+func PrintFloat64(value float64, precision int, bg_color, fg_color string, humanize bool, suffix string) (response string) {
+	var float_str string
+	if humanize {
+		float_str = Humanize(value, precision, suffix)
+	} else {
+		float_str = strconv.FormatFloat(value, 'f', precision, 64)
+	}
 	if bg_color == "" && fg_color == "" {
 		response = float_str
 	} else if bg_color == "" {
@@ -40,17 +65,17 @@ func PrintFloat64(value float64, precision int, bg_color, fg_color string) (resp
 	return
 }
 
-func DisplayFloat64(value float64, precision int, intervals []conf.IntervalDisplay) string {
+func DisplayFloat64(value float64, precision int, intervals []conf.IntervalDisplay, humanize bool, suffix string) string {
 	for _, v := range intervals {
 		if math.IsNaN(v.To) && math.IsNaN(v.From) {
-			return PrintFloat64(value, precision, v.Bg_color, v.Fg_color)
+			return PrintFloat64(value, precision, v.Bg_color, v.Fg_color, humanize, suffix)
 		} else if math.IsNaN(v.From) && value < v.To {
-			return PrintFloat64(value, precision, v.Bg_color, v.Fg_color)
+			return PrintFloat64(value, precision, v.Bg_color, v.Fg_color, humanize, suffix)
 		} else if math.IsNaN(v.To) && v.From <= value {
-			return PrintFloat64(value, precision, v.Bg_color, v.Fg_color)
+			return PrintFloat64(value, precision, v.Bg_color, v.Fg_color, humanize, suffix)
 		} else if v.From <= value && value < v.To {
-			return PrintFloat64(value, precision, v.Bg_color, v.Fg_color)
+			return PrintFloat64(value, precision, v.Bg_color, v.Fg_color, humanize, suffix)
 		}
 	}
-	return PrintFloat64(value, precision, "", "")
+	return PrintFloat64(value, precision, "default", "default", humanize, suffix)
 }

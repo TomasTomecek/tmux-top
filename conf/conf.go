@@ -27,6 +27,15 @@ type NetConfiguration struct {
 	Intervals  []IntervalDisplay             `json:"intervals"`
 }
 
+type MemConfiguration struct {
+	Intervals   []IntervalDisplay `json:"intervals"`
+	Separator   string            `json:"separator"`
+	SeparatorBg string            `json:"separator_bg"`
+	SeparatorFg string            `json:"separator_fg"`
+	TotalBg     string            `json:"total_bg"`
+	TotalFg     string            `json:"total_fg"`
+}
+
 type LoadConfiguration struct {
 	Intervals []IntervalDisplay `json:"intervals"`
 }
@@ -34,6 +43,7 @@ type LoadConfiguration struct {
 type Configuration struct {
 	Load LoadConfiguration `json:"load"`
 	Net  NetConfiguration  `json:"net"`
+	Mem  MemConfiguration  `json:"mem"`
 }
 
 var default_conf string = `
@@ -44,6 +54,18 @@ var default_conf string = `
 			"bg_color": "blue",
 			"fg_color": "black"
 		}]
+	},
+	"mem": {
+		"intervals": [{
+			"to": 1.0,
+			"bg_color": "blue",
+			"fg_color": "black"
+		}],
+		"separator": "|",
+		"separator_bg": "defult",
+		"separator_fg": "white",
+		"total_bg": "default",
+		"total_fg": "colour14"
 	},
 	"net": {
 		"interfaces": {
