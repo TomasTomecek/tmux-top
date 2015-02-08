@@ -4,9 +4,9 @@ package tmux_display
 
 import (
 	"fmt"
+	"github.com/TomasTomecek/tmux-top/conf"
 	"math"
 	"strconv"
-	"tmux-top/conf"
 )
 
 func FormatNicely(num float64) string {

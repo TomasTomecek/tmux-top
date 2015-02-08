@@ -13,25 +13,29 @@ type IntervalDisplay struct {
 	Fg_color string  `json:"fg_color"`
 }
 
+type NetIFConfiguration struct {
+	Alias          string `json:alias`
+	LabelColorFg   string `json:label_color_fg`
+	LabelColorBg   string `json:label_color_bg`
+	AddressColorFg string `json:address_color_fg`
+	AddressColorBg string `json:address_color_bg`
+}
+
+type NetConfiguration struct {
+	Interfaces map[string]NetIFConfiguration `json:interfaces`
+	Threshold  float64                       `json:threshold`
+	Intervals  []IntervalDisplay             `json:"intervals"`
+}
+
 type LoadConfiguration struct {
 	Intervals []IntervalDisplay `json:"intervals"`
 }
 
 type Configuration struct {
 	Load LoadConfiguration `json:"load"`
+	Net  NetConfiguration  `json:"net"`
 }
 
-/*
-{
-	"load": {
-		"intervals": [{...}]
-	},
-	"net": {
-		label: {...}
-		"colors": [{...}]
-	}
-}
-*/
 var default_conf string = `
 {
 	"load": {
@@ -40,7 +44,25 @@ var default_conf string = `
 			"bg_color": "blue",
 			"fg_color": "black"
 		}]
+	},
+	"net": {
+		"interfaces": {
+			"wlp3s0": {
+				"alias": "E",
+				"label_color_fg": "white",
+				"label_color_bg": "default",
+				"address_color_fg": "blue",
+				"address_color_bg": "default"
+			}
+		},
+		"threshold": 0.0,
+		"intervals": [{
+			"to": 1.0,
+			"bg_color": "blue",
+			"fg_color": "black"
+		}]
 	}
+
 }`
 
 func (c *Configuration) GetConf(conf_module string) LoadConfiguration {
