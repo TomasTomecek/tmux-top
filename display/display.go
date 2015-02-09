@@ -67,13 +67,13 @@ func PrintFloat64(value float64, precision int, bg_color, fg_color string, human
 
 func DisplayFloat64(value float64, precision int, intervals []conf.IntervalDisplay, humanize bool, suffix string) string {
 	for _, v := range intervals {
-		if math.IsNaN(v.To) && math.IsNaN(v.From) {
+		if math.IsNaN(v.GetTo()) && math.IsNaN(v.GetFrom()) {
 			return PrintFloat64(value, precision, v.BgColor, v.FgColor, humanize, suffix)
-		} else if math.IsNaN(v.From) && value < v.To {
+		} else if math.IsNaN(v.GetFrom()) && value < v.GetTo() {
 			return PrintFloat64(value, precision, v.BgColor, v.FgColor, humanize, suffix)
-		} else if math.IsNaN(v.To) && v.From <= value {
+		} else if math.IsNaN(v.GetTo()) && v.GetFrom() <= value {
 			return PrintFloat64(value, precision, v.BgColor, v.FgColor, humanize, suffix)
-		} else if v.From <= value && value < v.To {
+		} else if v.GetFrom() <= value && value < v.GetTo() {
 			return PrintFloat64(value, precision, v.BgColor, v.FgColor, humanize, suffix)
 		}
 	}

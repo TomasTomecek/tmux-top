@@ -89,6 +89,12 @@ var default_conf string = `
 			}
 		},
 		"threshold": 0.0,
+		"upload_label": "⬆",
+		"upload_label_bg": "default",
+		"upload_label_fg": "white",
+		"download_label": "⬇",
+		"download_label_bg": "default",
+		"download_label_fg": "white",
 		"intervals": [{
 			"to": 1024.0,
 			"bg_color": "default",

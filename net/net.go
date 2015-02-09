@@ -47,14 +47,16 @@ func read_net_stats(rx_path, tx_path string) (float64, float64) {
 	return rx_float, tx_float
 }
 
-func GetNetStats(iface_conf conf.NetConfiguration) []NetStat {
+func GetNetStats(c *conf.ConfigurationManager) []NetStat {
 	response := make([]NetStat, 0)
+	conf_interfaces := c.GetNetInterfaces()
+	threshold := c.GetNetThreshold()
 	ifs, err := net.Interfaces()
 	if err != nil {
 		fmt.Println(nil)
 	}
 	for _, intf := range ifs {
-		_, ok := iface_conf.Interfaces[intf.Name]
+		_, ok := conf_interfaces[intf.Name]
 		if !ok {
 			continue
 		}
@@ -77,7 +79,7 @@ func GetNetStats(iface_conf conf.NetConfiguration) []NetStat {
 		rx_diff := rx_float_after - rx_float
 		tx_diff := tx_float_after - tx_float
 
-		if rx_diff < iface_conf.Threshold && tx_diff < iface_conf.Threshold {
+		if rx_diff < threshold && tx_diff < threshold {
 			continue
 		}
 

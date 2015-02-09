@@ -11,42 +11,51 @@ import (
 	"os"
 )
 
-var configuration conf.Configuration = conf.LoadConf()
+var c *conf.ConfigurationManager = conf.LoadConf()
 
 func print_mem(*cli.Context) {
 	used, total := mem.GetMemStats()
-	separator := display.DisplayString(configuration.Mem.Separator, configuration.Mem.SeparatorBg,
-		configuration.Mem.SeparatorFg)
+	mem_intervals := c.GetMemIntervals()
+	separator := c.GetMemSeparator()
+	separator_bg := c.GetMemSeparatorBg()
+	separator_fg := c.GetMemSeparatorFg()
+	total_bg := c.GetMemTotalBg()
+	total_fg := c.GetMemTotalFg()
+
 	fmt.Printf("%s%s%s",
-		display.DisplayFloat64(used, 2, configuration.Mem.Intervals, true, "B"),
-		separator,
-		display.PrintFloat64(total, 2, configuration.Mem.TotalBg, configuration.Mem.TotalFg, true, "B"))
+		display.DisplayFloat64(used, 2, mem_intervals, true, "B"),
+		display.DisplayString(separator, separator_bg, separator_fg),
+		display.PrintFloat64(total, 2, total_bg, total_fg, true, "B"))
 }
 
 func print_load(*cli.Context) {
 	one, five, fifteen := load.GetCPULoad()
+	load_intervals := c.GetLoadIntervals()
+
 	fmt.Printf("%s %s %s",
-		display.DisplayFloat64(one, 2, configuration.Load.Intervals, false, ""),
-		display.DisplayFloat64(five, 2, configuration.Load.Intervals, false, ""),
-		display.DisplayFloat64(fifteen, 2, configuration.Load.Intervals, false, ""))
+		display.DisplayFloat64(one, 2, load_intervals, false, ""),
+		display.DisplayFloat64(five, 2, load_intervals, false, ""),
+		display.DisplayFloat64(fifteen, 2, load_intervals, false, ""))
 }
 
 func print_net(*cli.Context) {
-	net_stats := net.GetNetStats(configuration.Net)
+	net_stats := net.GetNetStats(c)
+	conf_interfaces := c.GetNetInterfaces()
+	net_intervals := c.GetNetIntervals()
 	for _, net_stat := range net_stats {
-		label := configuration.Net.Interfaces[net_stat.Name].Alias
+		label := conf_interfaces[net_stat.Name].Alias
 		if label == "" {
 			label = net_stat.Name
 		}
 		fmt.Printf("%s %s %s %s %s %s",
-			display.DisplayString(label, configuration.Net.Interfaces[net_stat.Name].LabelColorBg,
-				configuration.Net.Interfaces[net_stat.Name].LabelColorFg),
-			display.DisplayString(net_stat.Address, configuration.Net.Interfaces[net_stat.Name].AddressColorBg,
-				configuration.Net.Interfaces[net_stat.Name].AddressColorFg),
-			display.DisplayString("U", "default", "white"),
-			display.DisplayFloat64(net_stat.Tx, 1, configuration.Net.Intervals, true, "B"),
-			display.DisplayString("D", "default", "white"),
-			display.DisplayFloat64(net_stat.Rx, 1, configuration.Net.Intervals, true, "B"),
+			display.DisplayString(label, conf_interfaces[net_stat.Name].LabelColorBg,
+				conf_interfaces[net_stat.Name].LabelColorFg),
+			display.DisplayString(net_stat.Address, conf_interfaces[net_stat.Name].AddressColorBg,
+				conf_interfaces[net_stat.Name].AddressColorFg),
+			display.DisplayString(c.GetNetUpLabel(), c.GetNetUpLabelBg(), c.GetNetUpLabelFg()),
+			display.DisplayFloat64(net_stat.Tx, 1, net_intervals, true, "B"),
+			display.DisplayString(c.GetNetDownLabel(), c.GetNetDownLabelBg(), c.GetNetDownLabelFg()),
+			display.DisplayFloat64(net_stat.Rx, 1, net_intervals, true, "B"),
 		)
 	}
 }
