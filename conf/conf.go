@@ -3,29 +3,42 @@ package conf
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/TomasTomecek/tmux-top/humanize"
 	"io/ioutil"
 	"math"
 )
 
 type IntervalDisplay struct {
-	From    *float64 `json:"from"`
-	To      *float64 `json:"to"`
-	BgColor string   `json:"bg_color"`
-	FgColor string   `json:"fg_color"`
+	From    *string `json:"from"`
+	To      *string `json:"to"`
+	BgColor string  `json:"bg_color"`
+	FgColor string  `json:"fg_color"`
 }
 
-func (i *IntervalDisplay) GetFrom() float64 {
+func loadIntervalValue(s string) (float64, bool) {
+	f, err := humanize.DehumanizeString(s)
+	if err == nil {
+		return f, false
+	}
+	f, err = humanize.Absolutize(s)
+	if err == nil {
+		return f, true
+	}
+	return 0.0, false
+}
+
+func (i *IntervalDisplay) GetFrom() (float64, bool) {
 	if i.From == nil {
-		return math.NaN()
+		return math.NaN(), false
 	}
-	return *i.From
+	return loadIntervalValue(*i.From)
 }
 
-func (i *IntervalDisplay) GetTo() float64 {
+func (i *IntervalDisplay) GetTo() (float64, bool) {
 	if i.To == nil {
-		return math.NaN()
+		return math.NaN(), false
 	}
-	return *i.To
+	return loadIntervalValue(*i.To)
 }
 
 type NetIFConfiguration struct {

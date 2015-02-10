@@ -2,7 +2,7 @@ package mem
 
 import (
 	"fmt"
-	display "github.com/TomasTomecek/tmux-top/display"
+	"github.com/TomasTomecek/tmux-top/humanize"
 	"io/ioutil"
 	"strconv"
 	"strings"
@@ -25,11 +25,11 @@ func GetMemStats() (used, total float64) {
 			total, _ = strconv.ParseFloat(line_chunks[1], 64)
 			// no idea why /proc/meminfo outputs stuff in kilobytes
 			// what is this, 1990?
-			total = display.Dehumanize(total, line_chunks[2])
+			total, _ = humanize.Dehumanize(total, line_chunks[2])
 		}
 		if line_chunks[0] == "MemFree" {
 			free, _ = strconv.ParseFloat(line_chunks[1], 64)
-			free = display.Dehumanize(free, line_chunks[2])
+			free, _ = humanize.Dehumanize(free, line_chunks[2])
 		}
 	}
 	used = total - free

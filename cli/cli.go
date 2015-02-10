@@ -23,7 +23,7 @@ func print_mem(*cli.Context) {
 	total_fg := c.GetMemTotalFg()
 
 	fmt.Printf("%s%s%s",
-		display.DisplayFloat64(used, 2, mem_intervals, true, "B"),
+		display.DisplayFloat64(used, 2, mem_intervals, true, "B", total),
 		display.DisplayString(separator, separator_bg, separator_fg),
 		display.PrintFloat64(total, 2, total_bg, total_fg, true, "B"))
 }
@@ -33,9 +33,9 @@ func print_load(*cli.Context) {
 	load_intervals := c.GetLoadIntervals()
 
 	fmt.Printf("%s %s %s",
-		display.DisplayFloat64(one, 2, load_intervals, false, ""),
-		display.DisplayFloat64(five, 2, load_intervals, false, ""),
-		display.DisplayFloat64(fifteen, 2, load_intervals, false, ""))
+		display.DisplayFloat64(one, 2, load_intervals, false, "", 0.0),
+		display.DisplayFloat64(five, 2, load_intervals, false, "", 0.0),
+		display.DisplayFloat64(fifteen, 2, load_intervals, false, "", 0.0))
 }
 
 func print_net(*cli.Context) {
@@ -53,9 +53,9 @@ func print_net(*cli.Context) {
 			display.DisplayString(net_stat.Address, conf_interfaces[net_stat.Name].AddressColorBg,
 				conf_interfaces[net_stat.Name].AddressColorFg),
 			display.DisplayString(c.GetNetUpLabel(), c.GetNetUpLabelBg(), c.GetNetUpLabelFg()),
-			display.DisplayFloat64(net_stat.Tx, 1, net_intervals, true, "B"),
+			display.DisplayFloat64(net_stat.Tx, 1, net_intervals, true, "B", 0.0),
 			display.DisplayString(c.GetNetDownLabel(), c.GetNetDownLabelBg(), c.GetNetDownLabelFg()),
-			display.DisplayFloat64(net_stat.Rx, 1, net_intervals, true, "B"),
+			display.DisplayFloat64(net_stat.Rx, 1, net_intervals, true, "B", 0.0),
 		)
 	}
 }

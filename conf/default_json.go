@@ -4,57 +4,57 @@ var default_conf string = `
 {
 	"load": {
 		"intervals": [{
-			"to": 0.1,
+			"to": "0.1",
 			"bg_color": "default",
 			"fg_color": "colour10"
 		}, {
-			"from": 0.1,
-			"to": 0.25,
+			"from": "0.1",
+			"to": "0.25",
 			"bg_color": "default",
 			"fg_color": "green"
 		}, {
-			"from": 0.25,
-			"to": 0.7,
+			"from": "0.25",
+			"to": "0.7",
 			"bg_color": "default",
 			"fg_color": "colour166"
 		}, {
-			"from": 0.7,
-			"to": 5.0,
+			"from": "0.7",
+			"to": "5.0",
 			"bg_color": "default",
 			"fg_color": "colour1"
 		}, {
-			"from": 5.0,
+			"from": "5.0",
 			"bg_color": "colour1",
 			"fg_color": "white"
 		}]
 	},
 	"mem": {
 		"intervals": [{
-			"to": 618076569.6,
+			"to": "10%",
 			"bg_color": "default",
 			"fg_color": "colour10"
 		}, {
-			"from": 618076569.6,
-			"to": 1545191424.0,
+			"from": "10%",
+			"to": "50%",
 			"bg_color": "default",
 			"fg_color": "green"
 		}, {
-			"from": 1545191424.0,
-			"to": 3090382848.0,
+			"from": "50%",
+			"to": "75%",
 			"bg_color": "default",
 			"fg_color": "colour166"
 		}, {
-			"from": 3090382848.0,
-			"to": 5562689126.4,
+			"from": "75%",
+			"to": "85%",
 			"bg_color": "default",
 			"fg_color": "colour1"
 		}, {
-			"from": 5562689126.4,
-			"to": 6180765696.0,
+			"from": "85%",
+			"to": "95%",
 			"bg_color": "colour166",
 			"fg_color": "white"
 		}, {
-			"from": 6180765696.0,
+			"from": "95%",
 			"bg_color": "colour1",
 			"fg_color": "white"
 		}],
@@ -96,31 +96,31 @@ var default_conf string = `
 		"download_label_bg": "default",
 		"download_label_fg": "white",
 		"intervals": [{
-			"to": 1024.0,
+			"to": "1KB",
 			"bg_color": "default",
 			"fg_color": "colour10"
 		}, {
-			"from": 1024.0,
-			"to": 102400.0,
+			"from": "1KB",
+			"to": "256KB",
 			"bg_color": "default",
 			"fg_color": "green"
 		}, {
-			"from": 102400.0,
-			"to": 524288.0,
+			"from": "256KB",
+			"to": "512KB",
 			"bg_color": "default",
 			"fg_color": "colour166"
 		}, {
-			"from": 524288.0,
-			"to": 1048576.0,
+			"from": "512KB",
+			"to": "2MB",
 			"bg_color": "default",
 			"fg_color": "colour1"
 		}, {
-			"from": 1048576.0,
-			"to": 5242880.0,
+			"from": "2MB",
+			"to": "4MB",
 			"bg_color": "colour166",
 			"fg_color": "white"
 		}, {
-			"from": 5242880.0,
+			"from": "4MB",
 			"bg_color": "colour1",
 			"fg_color": "white"
 		}]
