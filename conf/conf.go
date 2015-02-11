@@ -6,6 +6,8 @@ import (
 	"github.com/TomasTomecek/tmux-top/humanize"
 	"io/ioutil"
 	"math"
+	"os"
+	"path"
 )
 
 type IntervalDisplay struct {
@@ -101,7 +103,8 @@ func loadConfFromBytes(json_input []byte) *Configuration {
 
 func LoadConf() *ConfigurationManager {
 	var c *ConfigurationManager = new(ConfigurationManager)
-	bytes := loadConfFromFile("~/.tmux-top")
+	home_dir := os.Getenv("HOME")
+	bytes := loadConfFromFile(path.Join(home_dir, ".tmux-top"))
 	if len(bytes) > 0 {
 		c.User = loadConfFromBytes(bytes)
 	}
