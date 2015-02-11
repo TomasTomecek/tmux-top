@@ -29,19 +29,19 @@ func Dehumanize(num float64, unit string) (float64, error) {
 }
 
 func DehumanizeString(value string) (float64, error) {
-	r, _ := regexp.Compile(`([0-9.]+)\s*([a-zA-Z]+)`)
-	r_simple, _ := regexp.Compile("([0-9.]+)")
+	r, _ := regexp.Compile(`^([0-9.]+)\s*([a-zA-Z]+)$`)
+	r_simple, _ := regexp.Compile("^([0-9.]+)$")
 	m := r.FindStringSubmatch(value)
 	m_simple := r_simple.FindStringSubmatch(value)
 
-	if len(m_simple) == 0 {
-		return 0.0, fmt.Errorf("Invalid value: '%s'", value)
+	if len(m_simple) == 2 {
+		return strconv.ParseFloat(m_simple[0], 64)
 	}
-	f, _ := strconv.ParseFloat(m_simple[0], 64)
 	if len(m) == 3 {
+		f, _ := strconv.ParseFloat(m[1], 64)
 		return Dehumanize(f, m[2])
 	}
-	return f, nil
+	return 0.0, fmt.Errorf("Invalid value: '%s'", value)
 }
 
 func Absolutize(value string) (response float64, e error) {
@@ -54,7 +54,12 @@ func Absolutize(value string) (response float64, e error) {
 		e = fmt.Errorf("Missing percent sign in '%s'", value)
 		return response, e
 	}
-	return strconv.ParseFloat(v, 64)
+	value_f, err := strconv.ParseFloat(v, 64)
+	if err != nil {
+		return response, err
+	} else {
+		return value_f / 100.0, nil
+	}
 }
 
 func Humanize(num float64, precision int, suffix string) string {

@@ -61,7 +61,7 @@ func TestDehumanizeString4(t *testing.T) {
 // func Absolutize(value string) (response float64, e error) {
 
 func TestAbsolutize1(t *testing.T) {
-	d, _ := Absolutize("0.1%")
+	d, _ := Absolutize("10%")
 	if d != 0.1 {
 		t.Error(fmt.Sprintf("%f != 0.1", d))
 	}
