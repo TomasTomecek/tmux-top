@@ -96,10 +96,6 @@ var default_conf string = `
 		"download_label_bg": "default",
 		"download_label_fg": "white",
 		"intervals": [{
-			"to": "1KB",
-			"bg_color": "default",
-			"fg_color": "colour10"
-		}, {
 			"from": "1KB",
 			"to": "256KB",
 			"bg_color": "default",

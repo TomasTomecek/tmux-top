@@ -53,7 +53,6 @@ type NetIFConfiguration struct {
 
 type NetConfiguration struct {
 	Interfaces  *map[string]NetIFConfiguration `json:"interfaces"`
-	Threshold   *float64                       `json:"threshold"`
 	UpLabel     *string                        `json:"upload_label"`
 	UpLabelBg   *string                        `json:"upload_label_bg"`
 	UpLabelFg   *string                        `json:"upload_label_fg"`

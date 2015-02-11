@@ -50,7 +50,6 @@ func read_net_stats(rx_path, tx_path string) (float64, float64) {
 func GetNetStats(c *conf.ConfigurationManager) []NetStat {
 	response := make([]NetStat, 0)
 	conf_interfaces := c.GetNetInterfaces()
-	threshold := c.GetNetThreshold()
 	ifs, err := net.Interfaces()
 	if err != nil {
 		fmt.Println(nil)
@@ -78,10 +77,6 @@ func GetNetStats(c *conf.ConfigurationManager) []NetStat {
 
 		rx_diff := rx_float_after - rx_float
 		tx_diff := tx_float_after - tx_float
-
-		if rx_diff < threshold && tx_diff < threshold {
-			continue
-		}
 
 		for _, address := range addrs {
 			address_s := address.String()

@@ -55,5 +55,5 @@ func DisplayFloat64(value float64, precision int, intervals []conf.IntervalDispl
 			return PrintFloat64(value, precision, v.BgColor, v.FgColor, humanize, suffix)
 		}
 	}
-	return PrintFloat64(value, precision, "default", "default", humanize, suffix)
+	return ""
 }

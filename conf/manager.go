@@ -113,17 +113,6 @@ func (c *ConfigurationManager) GetNetIntervals() []IntervalDisplay {
 	return *c.Default.Net.Intervals
 }
 
-func (c *ConfigurationManager) GetNetThreshold() float64 {
-	if c.User != nil {
-		if c.User.Net != nil {
-			if c.User.Net.Threshold != nil {
-				return *c.User.Net.Threshold
-			}
-		}
-	}
-	return *c.Default.Net.Threshold
-}
-
 func (c *ConfigurationManager) GetNetUpLabel() string {
 	if c.User != nil {
 		if c.User.Net != nil {

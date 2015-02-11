@@ -47,16 +47,23 @@ func print_net(*cli.Context) {
 		if label == "" {
 			label = net_stat.Name
 		}
-		fmt.Printf("%s %s %s %s %s %s",
+		fmt.Printf("%s %s ",
 			display.DisplayString(label, conf_interfaces[net_stat.Name].LabelColorBg,
 				conf_interfaces[net_stat.Name].LabelColorFg),
 			display.DisplayString(net_stat.Address, conf_interfaces[net_stat.Name].AddressColorBg,
-				conf_interfaces[net_stat.Name].AddressColorFg),
-			display.DisplayString(c.GetNetUpLabel(), c.GetNetUpLabelBg(), c.GetNetUpLabelFg()),
-			display.DisplayFloat64(net_stat.Tx, 1, net_intervals, true, "B", 0.0),
-			display.DisplayString(c.GetNetDownLabel(), c.GetNetDownLabelBg(), c.GetNetDownLabelFg()),
-			display.DisplayFloat64(net_stat.Rx, 1, net_intervals, true, "B", 0.0),
-		)
+				conf_interfaces[net_stat.Name].AddressColorFg))
+		rendered_up := display.DisplayFloat64(net_stat.Tx, 1, net_intervals, true, "B", 0.0)
+		if rendered_up != "" {
+			fmt.Printf("%s %s ",
+				display.DisplayString(c.GetNetUpLabel(), c.GetNetUpLabelBg(), c.GetNetUpLabelFg()),
+				rendered_up)
+		}
+		rendered_down := display.DisplayFloat64(net_stat.Rx, 1, net_intervals, true, "B", 0.0)
+		if rendered_down != "" {
+			fmt.Printf("%s %s ",
+				display.DisplayString(c.GetNetDownLabel(), c.GetNetDownLabelBg(), c.GetNetDownLabelFg()),
+				rendered_down)
+		}
 	}
 }
 
