@@ -30,31 +30,31 @@ var default_conf string = `
 	},
 	"mem": {
 		"intervals": [{
-			"to": "10%",
+			"to": "50%",
 			"bg_color": "default",
 			"fg_color": "colour10"
 		}, {
-			"from": "10%",
+			"from": "50%",
 			"to": "50%",
 			"bg_color": "default",
 			"fg_color": "green"
 		}, {
-			"from": "50%",
+			"from": "70%",
 			"to": "75%",
 			"bg_color": "default",
 			"fg_color": "colour166"
 		}, {
-			"from": "75%",
+			"from": "85%",
 			"to": "85%",
 			"bg_color": "default",
 			"fg_color": "colour1"
 		}, {
-			"from": "85%",
+			"from": "90%",
 			"to": "95%",
 			"bg_color": "colour166",
 			"fg_color": "white"
 		}, {
-			"from": "95%",
+			"from": "97%",
 			"bg_color": "colour1",
 			"fg_color": "white"
 		}],
