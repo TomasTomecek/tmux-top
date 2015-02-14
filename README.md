@@ -3,13 +3,13 @@ tmux-top
 
 Monitoring information for your tmux status line.
 
-`tmux-top` allows you to see your load, memory usage and network information in status of [http://tmux.sourceforge.net/](tmux).
+`tmux-top` allows you to see your load, memory usage and network information in status of [tmux](http://tmux.sourceforge.net/).
 
 
 Installation
 ------------
 
-This tool is written in [http://golang.org/](Go). If you want to compile it, you have [http://golang.org/doc/install](setup your Go environment) first.
+This tool is written in [Go](http://golang.org/). If you want to compile it, you have [setup your Go environment](http://golang.org/doc/install) first.
 
 ### Go distribution
 
@@ -48,4 +48,4 @@ There are three subcommands at the moment:
 Configuration
 -------------
 
-[https://github.com/TomasTomecek/tmux-top/blob/master/conf/default_json.go](This json) contains default configuration. If you want to change something, just override the json and store it in `~/.tmux-top`. You can change whatever you want. If the value is not found in your configuration file, it's loaded from default oone.
+[This json](https://github.com/TomasTomecek/tmux-top/blob/master/conf/default_json.go) contains default configuration. If you want to change something, just override the json and store it in `~/.tmux-top`. You can change whatever you want. If the value is not found in your configuration file, it's loaded from default oone.
