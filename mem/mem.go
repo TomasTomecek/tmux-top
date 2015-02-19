@@ -10,7 +10,7 @@ import (
 )
 
 func GetMemStats() (used, total float64) {
-	var free, buffers, cached float64
+	var free, buffers, cached, available float64
 	contents, err := ioutil.ReadFile("/proc/meminfo")
 	if err != nil {
 		return
@@ -26,6 +26,9 @@ func GetMemStats() (used, total float64) {
 			// no idea why /proc/meminfo outputs stuff in kilobytes
 			// what is this, 1990?
 			total, _ = humanize.Dehumanize(total, line_chunks[2])
+		} else if line_chunks[0] == "MemAvailable" {
+			available, _ = strconv.ParseFloat(line_chunks[1], 64)
+			available, _ = humanize.Dehumanize(available, line_chunks[2])
 		} else if line_chunks[0] == "MemFree" {
 			free, _ = strconv.ParseFloat(line_chunks[1], 64)
 			free, _ = humanize.Dehumanize(free, line_chunks[2])
@@ -37,7 +40,7 @@ func GetMemStats() (used, total float64) {
 			cached, _ = humanize.Dehumanize(cached, line_chunks[2])
 		}
 	}
-	used = total - free - cached - buffers
+	used = total - available
 	return
 }
 
