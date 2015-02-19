@@ -9,16 +9,16 @@ var default_conf string = `
 			"fg_color": "colour10"
 		}, {
 			"from": "0.1",
-			"to": "0.25",
+			"to": "0.7",
 			"bg_color": "default",
 			"fg_color": "green"
 		}, {
-			"from": "0.25",
-			"to": "0.7",
+			"from": "0.7",
+			"to": "1.5",
 			"bg_color": "default",
 			"fg_color": "colour166"
 		}, {
-			"from": "0.7",
+			"from": "1.5",
 			"to": "5.0",
 			"bg_color": "default",
 			"fg_color": "colour1"
@@ -35,22 +35,22 @@ var default_conf string = `
 			"fg_color": "colour10"
 		}, {
 			"from": "50%",
-			"to": "50%",
+			"to": "75%",
 			"bg_color": "default",
 			"fg_color": "green"
 		}, {
-			"from": "70%",
-			"to": "75%",
+			"from": "75%",
+			"to": "85%",
 			"bg_color": "default",
 			"fg_color": "colour166"
 		}, {
 			"from": "85%",
-			"to": "85%",
+			"to": "93%",
 			"bg_color": "default",
 			"fg_color": "colour1"
 		}, {
-			"from": "90%",
-			"to": "95%",
+			"from": "93%",
+			"to": "97%",
 			"bg_color": "colour166",
 			"fg_color": "white"
 		}, {
@@ -96,7 +96,7 @@ var default_conf string = `
 		"download_label_bg": "default",
 		"download_label_fg": "white",
 		"intervals": [{
-			"from": "1KB",
+			"from": "25KB",
 			"to": "256KB",
 			"bg_color": "default",
 			"fg_color": "green"
