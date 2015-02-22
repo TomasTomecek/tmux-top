@@ -15,7 +15,11 @@ Monitoring information for your [tmux](http://tmux.sourceforge.net/) status line
 Installation
 ------------
 
-This tool is written in [Go](http://golang.org/). If you want to compile it, you have [setup your Go environment](http://golang.org/doc/install) first.
+This tool is written in [Go](http://golang.org/). If you want to compile it, you have to [setup your Go environment](http://golang.org/doc/install) first.
+
+Supported platforms:
+
+ * linux
 
 ### Go distribution
 
