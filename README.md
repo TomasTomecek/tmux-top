@@ -1,9 +1,15 @@
 tmux-top
 ========
 
-Monitoring information for your tmux status line.
+Monitoring information for your [tmux](http://tmux.sourceforge.net/) status line.
 
-`tmux-top` allows you to see your load, memory usage and network information in status of [tmux](http://tmux.sourceforge.net/).
+`tmux-top` allows you to see your:
+
+ * load
+ * memory usage
+ * network information
+
+![tmux-top sample](https://raw.githubusercontent.com/TomasTomecek/tmux-top/master/docs/tmux_top_example.png)
 
 
 Installation
@@ -48,4 +54,51 @@ There are three subcommands at the moment:
 Configuration
 -------------
 
-[This json](https://github.com/TomasTomecek/tmux-top/blob/master/conf/default_json.go) contains default configuration. If you want to change something, just override the json and store it in `~/.tmux-top`. You can change whatever you want. If the value is not found in your configuration file, it's loaded from default oone.
+[This json](https://github.com/TomasTomecek/tmux-top/blob/master/conf/default_json.go) contains default configuration. If you want to change something, just override the json and store it in `~/.tmux-top`. You can change whatever you want. If the value is not found in your configuration file, it's loaded from default one.
+
+Your configuration may look like this:
+
+```json
+{
+  "net": {
+    "interfaces": {
+      "enp0s25": {
+        "alias": "E",
+        "label_color_fg": "white",
+        "label_color_bg": "default",
+        "address_color_fg": "colour4",
+        "address_color_bg": "default"
+      },
+      "enp5s0": {
+        "alias": "E",
+        "label_color_fg": "white",
+        "label_color_bg": "default",
+        "address_color_fg": "colour4",
+        "address_color_bg": "default"
+      },
+      "wlp3s0": {
+        "alias": "W",
+        "label_color_fg": "white",
+        "label_color_bg": "default",
+        "address_color_fg": "green",
+        "address_color_bg": "default"
+      },
+      "tun0": {
+        "alias": "V",
+        "label_color_fg": "white",
+        "label_color_bg": "default",
+        "address_color_fg": "colour3",
+        "address_color_bg": "default"
+      }
+    }
+  }
+}
+```
+
+and tmux configuration:
+
+```shell
+set -g status-left "#(tmux-top n)"
+set -g status-right "#(tmux-top m) #[fg=white]:: #(tmux-top l)"
+```
+
