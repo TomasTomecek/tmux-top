@@ -8,6 +8,7 @@ Monitoring information for your [tmux](http://tmux.sourceforge.net/) status line
  * load
  * memory usage
  * network information
+ * I/O
 
 ![tmux-top sample](https://raw.githubusercontent.com/TomasTomecek/tmux-top/master/docs/tmux_top_example.png)
 
@@ -17,7 +18,7 @@ Installation
 
 This tool is written in [Go](http://golang.org/). If you want to compile it, you have to [setup your Go environment](http://golang.org/doc/install) first.
 
-Supported platforms:
+#### Supported platforms
 
  * linux
 
@@ -54,6 +55,7 @@ There are three subcommands at the moment:
  1. `tmux-top load` — load of your workstation
  2. `tmux-top mem` — actual memry usage and total memory
  3. `tmux-top net` — network statistics: IP address, network interface and current bandwidth
+ 4. `tmux-top io` — I/O statistics: current reads and writes
 
 Configuration
 -------------
