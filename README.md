@@ -108,3 +108,11 @@ set -g status-left "#(tmux-top n)"
 set -g status-right "#(tmux-top m) #[fg=white]:: #(tmux-top l)"
 ```
 
+Other goodies for tmux
+----------------------
+
+ * [tmux-mem-cpu-load](https://github.com/thewtex/tmux-mem-cpu-load)
+ * [powerline](https://github.com/powerline/powerline)
+ * [rainbarf](https://github.com/creaktive/rainbarf)
+ * [Battery](https://github.com/Goles/Battery)
+
