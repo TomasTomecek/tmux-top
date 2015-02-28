@@ -9,7 +9,7 @@ import (
 )
 
 func Dehumanize(num float64, unit string) (float64, error) {
-	suffixes := map[string]int{"K": 1, "M": 2, "G": 3, "T": 4, "P": 5, "E": 6, "Z": 7}
+	suffixes := map[string]int{"": 0, "K": 1, "M": 2, "G": 3, "T": 4, "P": 5, "E": 6, "Z": 7}
 	suffix := "B"
 	var prefix string
 

@@ -58,6 +58,13 @@ func TestDehumanizeString4(t *testing.T) {
 	}
 }
 
+func TestDehumanizeString5(t *testing.T) {
+	d, _ := DehumanizeString("1B")
+	if d != 1.0 {
+		t.Error(fmt.Sprintf("%f != 1.0", d))
+	}
+}
+
 // func Absolutize(value string) (response float64, e error) {
 
 func TestAbsolutize1(t *testing.T) {

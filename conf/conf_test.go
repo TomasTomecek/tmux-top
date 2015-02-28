@@ -17,6 +17,16 @@ func TestLoadIntervalValue1(t *testing.T) {
 	}
 }
 
+func TestLoadIntervalValue3(t *testing.T) {
+	d, r := loadIntervalValue("1B")
+	if d != 1.0 {
+		t.Error(fmt.Sprintf("%f != 1.0", d))
+	}
+	if r {
+		t.Error("Value should be absolute!")
+	}
+}
+
 func TestLoadIntervalValue2(t *testing.T) {
 	d, r := loadIntervalValue("10%")
 	if d != 0.1 {
