@@ -62,6 +62,23 @@ type NetConfiguration struct {
 	Intervals   *[]IntervalDisplay             `json:"intervals"`
 }
 
+type IODeviceConfiguration struct {
+	Alias        string `json:"alias"`
+	LabelColorFg string `json:"label_color_fg"`
+	LabelColorBg string `json:"label_color_bg"`
+}
+
+type IOConfiguration struct {
+	Devices      *map[string]IODeviceConfiguration `json:"devices"`
+	ReadLabel    *string                           `json:"read_label"`
+	ReadLabelBg  *string                           `json:"read_label_bg"`
+	ReadLabelFg  *string                           `json:"read_label_fg"`
+	WriteLabel   *string                           `json:"write_label"`
+	WriteLabelBg *string                           `json:"write_label_bg"`
+	WriteLabelFg *string                           `json:"write_label_fg"`
+	Intervals    *[]IntervalDisplay                `json:"intervals"`
+}
+
 type MemConfiguration struct {
 	Intervals   *[]IntervalDisplay `json:"intervals"`
 	Separator   *string            `json:"separator"`
@@ -79,6 +96,7 @@ type Configuration struct {
 	Load *LoadConfiguration `json:"load"`
 	Net  *NetConfiguration  `json:"net"`
 	Mem  *MemConfiguration  `json:"mem"`
+	IO   *IOConfiguration   `json:"io"`
 }
 
 func loadConfFromFile(path string) []byte {

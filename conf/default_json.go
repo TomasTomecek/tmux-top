@@ -120,6 +120,50 @@ var default_conf string = `
 			"bg_color": "colour1",
 			"fg_color": "white"
 		}]
+	},
+	"io": {
+		"devices": {
+			"sda": {
+				"alias": "",
+				"label_color_fg": "colour3",
+				"label_color_bg": "default"
+			},
+			"sdb": {
+				"alias": "",
+				"label_color_fg": "colour4",
+				"label_color_bg": "default"
+			}
+		},
+		"read_label": "⬆",
+		"read_label_bg": "default",
+		"read_label_fg": "white",
+		"write_label": "⬇",
+		"write_label_bg": "default",
+		"write_label_fg": "white",
+		"intervals": [{
+			"from": "1KB",
+			"to": "512KB",
+			"bg_color": "default",
+			"fg_color": "green"
+		}, {
+			"from": "512KB",
+			"to": "2MB",
+			"bg_color": "default",
+			"fg_color": "colour166"
+		}, {
+			"from": "2MB",
+			"to": "8MB",
+			"bg_color": "default",
+			"fg_color": "colour1"
+		}, {
+			"from": "8MB",
+			"to": "16MB",
+			"bg_color": "colour166",
+			"fg_color": "white"
+		}, {
+			"from": "16MB",
+			"bg_color": "colour1",
+			"fg_color": "white"
+		}]
 	}
-
 }`

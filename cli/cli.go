@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/TomasTomecek/tmux-top/conf"
 	display "github.com/TomasTomecek/tmux-top/display"
+	"github.com/TomasTomecek/tmux-top/io"
 	"github.com/TomasTomecek/tmux-top/load"
 	"github.com/TomasTomecek/tmux-top/mem"
 	"github.com/TomasTomecek/tmux-top/net"
@@ -67,6 +68,36 @@ func print_net(*cli.Context) {
 	}
 }
 
+func print_io(*cli.Context) {
+	io_stats := io.GetIOStats(c)
+	conf_devices := c.GetIODevices()
+	io_intervals := c.GetIOIntervals()
+	for _, stat := range io_stats {
+		rendered_read := display.DisplayFloat64(stat.BytesRead, 1, io_intervals, true, "B", 0.0)
+		rendered_write := display.DisplayFloat64(stat.BytesWritten, 1, io_intervals, true, "B", 0.0)
+		if rendered_write == "" && rendered_read == "" {
+			continue
+		}
+		label := conf_devices[stat.Name].Alias
+		if label == "" {
+			label = stat.Name
+		}
+		fmt.Printf("%s ",
+			display.DisplayString(label, conf_devices[stat.Name].LabelColorBg,
+				conf_devices[stat.Name].LabelColorFg))
+		if rendered_read != "" {
+			fmt.Printf("%s %s ",
+				display.DisplayString(c.GetIOReadLabel(), c.GetIOReadLabelBg(), c.GetIOReadLabelFg()),
+				rendered_read)
+		}
+		if rendered_write != "" {
+			fmt.Printf("%s %s ",
+				display.DisplayString(c.GetIOWriteLabel(), c.GetIOWriteLabelBg(), c.GetIOWriteLabelFg()),
+				rendered_write)
+		}
+	}
+}
+
 func main() {
 
 	app := cli.NewApp()
@@ -90,7 +121,14 @@ func main() {
 			ShortName: "l",
 			Usage:     "show load",
 			Action:    print_load,
-		}}
+		},
+		{
+			Name:      "io",
+			ShortName: "i",
+			Usage:     "show I/O stats ",
+			Action:    print_io,
+		},
+	}
 
 	app.Run(os.Args)
 }

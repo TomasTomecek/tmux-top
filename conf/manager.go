@@ -178,3 +178,91 @@ func (c *ConfigurationManager) GetNetDownLabelFg() string {
 	}
 	return *c.Default.Net.DownLabelFg
 }
+
+func (c *ConfigurationManager) GetIODevices() map[string]IODeviceConfiguration {
+	if c.User != nil {
+		if c.User.IO != nil {
+			if c.User.IO.Devices != nil {
+				return *c.User.IO.Devices
+			}
+		}
+	}
+	return *c.Default.IO.Devices
+}
+
+func (c *ConfigurationManager) GetIOIntervals() []IntervalDisplay {
+	if c.User != nil {
+		if c.User.IO != nil {
+			if c.User.IO.Intervals != nil {
+				return *c.User.IO.Intervals
+			}
+		}
+	}
+	return *c.Default.IO.Intervals
+}
+
+func (c *ConfigurationManager) GetIOReadLabel() string {
+	if c.User != nil {
+		if c.User.IO != nil {
+			if c.User.IO.ReadLabel != nil {
+				return *c.User.IO.ReadLabel
+			}
+		}
+	}
+	return *c.Default.IO.ReadLabel
+}
+
+func (c *ConfigurationManager) GetIOReadLabelBg() string {
+	if c.User != nil {
+		if c.User.IO != nil {
+			if c.User.IO.ReadLabelBg != nil {
+				return *c.User.IO.ReadLabelBg
+			}
+		}
+	}
+	return *c.Default.IO.ReadLabelBg
+}
+
+func (c *ConfigurationManager) GetIOReadLabelFg() string {
+	if c.User != nil {
+		if c.User.IO != nil {
+			if c.User.IO.ReadLabelFg != nil {
+				return *c.User.IO.ReadLabelFg
+			}
+		}
+	}
+	return *c.Default.IO.ReadLabelFg
+}
+
+func (c *ConfigurationManager) GetIOWriteLabel() string {
+	if c.User != nil {
+		if c.User.IO != nil {
+			if c.User.IO.WriteLabel != nil {
+				return *c.User.IO.WriteLabel
+			}
+		}
+	}
+	return *c.Default.IO.WriteLabel
+}
+
+func (c *ConfigurationManager) GetIOWriteLabelBg() string {
+	if c.User != nil {
+		if c.User.IO != nil {
+			if c.User.IO.WriteLabelBg != nil {
+				return *c.User.IO.WriteLabelBg
+			}
+		}
+	}
+	return *c.Default.IO.WriteLabelBg
+}
+
+func (c *ConfigurationManager) GetIOWriteLabelFg() string {
+	if c.User != nil {
+		if c.User.IO != nil {
+			if c.User.IO.WriteLabelFg != nil {
+				return *c.User.IO.WriteLabelFg
+			}
+		}
+	}
+	return *c.Default.IO.WriteLabelFg
+}

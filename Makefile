@@ -1,4 +1,4 @@
-TEST_MODULE = conf net humanize load
+TEST_MODULE = conf net humanize load io
 .PHONY: default clean install build test
 
 default: build
