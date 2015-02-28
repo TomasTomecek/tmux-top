@@ -88,7 +88,6 @@ var default_conf string = `
 				"address_color_bg": "default"
 			}
 		},
-		"threshold": 0.0,
 		"upload_label": "⬆",
 		"upload_label_bg": "default",
 		"upload_label_fg": "white",
