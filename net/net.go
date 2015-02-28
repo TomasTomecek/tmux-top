@@ -71,6 +71,7 @@ func GetNetStats(c *conf.ConfigurationManager) []NetStat {
 		intf_stats_path_tx := fmt.Sprintf("/sys/class/net/%s/statistics/tx_bytes", intf.Name)
 		rx_float, tx_float := read_net_stats(intf_stats_path_rx, intf_stats_path_tx)
 
+		// FIXME: WAT! one sleep globally, not one per interface
 		time.Sleep(1000 * time.Millisecond)
 
 		rx_float_after, tx_float_after := read_net_stats(intf_stats_path_rx, intf_stats_path_tx)
