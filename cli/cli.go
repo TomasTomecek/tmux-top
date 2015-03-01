@@ -53,13 +53,13 @@ func print_net(*cli.Context) {
 				conf_interfaces[net_stat.Name].LabelColorFg),
 			display.DisplayString(net_stat.Address, conf_interfaces[net_stat.Name].AddressColorBg,
 				conf_interfaces[net_stat.Name].AddressColorFg))
-		rendered_up := display.DisplayFloat64(net_stat.Tx, 1, net_intervals, true, "B", 0.0)
+		rendered_up := display.DisplayFloat64(net_stat.TxDiff, 1, net_intervals, true, "B", 0.0)
 		if rendered_up != "" {
 			fmt.Printf("%s %s ",
 				display.DisplayString(c.GetNetUpLabel(), c.GetNetUpLabelBg(), c.GetNetUpLabelFg()),
 				rendered_up)
 		}
-		rendered_down := display.DisplayFloat64(net_stat.Rx, 1, net_intervals, true, "B", 0.0)
+		rendered_down := display.DisplayFloat64(net_stat.RxDiff, 1, net_intervals, true, "B", 0.0)
 		if rendered_down != "" {
 			fmt.Printf("%s %s ",
 				display.DisplayString(c.GetNetDownLabel(), c.GetNetDownLabelBg(), c.GetNetDownLabelFg()),

@@ -2,6 +2,7 @@ package net
 
 import (
 	"fmt"
+	"github.com/TomasTomecek/tmux-top/conf"
 	"net"
 	"testing"
 )
@@ -20,5 +21,49 @@ func TestReadNetStats(t *testing.T) {
 	}
 	if tx < 0.0 {
 		t.Error("Tx is less than zero")
+	}
+}
+
+func TestReadEntries(t *testing.T) {
+	ifs, err := net.Interfaces()
+	if len(ifs) <= 0 {
+		t.Error("no network interfaces")
+	}
+	if err != nil {
+		t.Error("error during getting network interfaces")
+	}
+	c := &conf.ConfigurationManager{
+		Default: &conf.Configuration{
+			Net: &conf.NetConfiguration{
+				Interfaces: &map[string]conf.NetIFConfiguration{
+					ifs[0].Name: conf.NetIFConfiguration{
+						Alias: "Banana",
+					}}}}}
+
+	stats := read_all_net_stats(c)
+	if len(stats) <= 0 {
+		t.Error("no stats for network interfaces")
+	}
+}
+
+func TestGetIOStats(t *testing.T) {
+	ifs, err := net.Interfaces()
+	if len(ifs) <= 0 {
+		t.Error("no network interfaces")
+	}
+	if err != nil {
+		t.Error("error during getting network interfaces")
+	}
+	c := &conf.ConfigurationManager{
+		Default: &conf.Configuration{
+			Net: &conf.NetConfiguration{
+				Interfaces: &map[string]conf.NetIFConfiguration{
+					ifs[0].Name: conf.NetIFConfiguration{
+						Alias: "Banana",
+					}}}}}
+
+	stats := GetNetStats(c)
+	if len(stats) <= 0 {
+		t.Error("no stats for network interfaces")
 	}
 }
