@@ -110,7 +110,7 @@ func GetNetStats(c *conf.ConfigurationManager) []NetStatDiff {
 			d := NetStatDiff{
 				Name:    value.Name,
 				Address: value.Address,
-				RxDiff:  value.Rx - old_value.Tx,
+				RxDiff:  value.Rx - old_value.Rx,
 				TxDiff:  value.Tx - old_value.Tx,
 			}
 			response = append(response, d)
