@@ -11,6 +11,7 @@ Monitoring information for your [tmux](http://tmux.sourceforge.net/) status line
  * I/O
 
 ![tmux-top sample](https://raw.githubusercontent.com/TomasTomecek/tmux-top/master/docs/tmux_top_example.png)
+![tmux-top sample](https://raw.githubusercontent.com/TomasTomecek/tmux-top/master/docs/tmux_top_example2.png)
 
 
 Installation
