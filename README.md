@@ -108,6 +108,8 @@ set -g status-left "#(tmux-top n)"
 set -g status-right "#(tmux-top m) #[fg=white]:: #(tmux-top l)"
 ```
 
+Layout inspiration from [this blog post](http://zanshin.net/2013/09/05/my-tmux-configuration/ ).
+
 Other goodies for tmux
 ----------------------
 
@@ -115,4 +117,3 @@ Other goodies for tmux
  * [powerline](https://github.com/powerline/powerline)
  * [rainbarf](https://github.com/creaktive/rainbarf)
  * [Battery](https://github.com/Goles/Battery)
-
