@@ -140,27 +140,27 @@ var default_conf string = `
 		"write_label_bg": "default",
 		"write_label_fg": "white",
 		"intervals": [{
-			"from": "1KB",
-			"to": "512KB",
+			"from": "1MB",
+			"to": "4MB",
 			"bg_color": "default",
 			"fg_color": "green"
 		}, {
-			"from": "512KB",
-			"to": "2MB",
+			"from": "4MB",
+			"to": "12MB",
 			"bg_color": "default",
 			"fg_color": "colour166"
 		}, {
-			"from": "2MB",
-			"to": "8MB",
+			"from": "12MB",
+			"to": "32MB",
 			"bg_color": "default",
 			"fg_color": "colour1"
 		}, {
-			"from": "8MB",
-			"to": "16MB",
+			"from": "32MB",
+			"to": "64MB",
 			"bg_color": "colour166",
 			"fg_color": "white"
 		}, {
-			"from": "16MB",
+			"from": "64MB",
 			"bg_color": "colour1",
 			"fg_color": "white"
 		}]
