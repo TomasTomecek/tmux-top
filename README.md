@@ -1,3 +1,5 @@
+[![Build Status](https://drone.io/github.com/TomasTomecek/tmux-top/status.png)](https://drone.io/github.com/TomasTomecek/tmux-top/latest)
+
 tmux-top
 ========
 
