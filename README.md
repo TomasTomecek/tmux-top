@@ -3,7 +3,7 @@
 tmux-top
 ========
 
-Monitoring information for your [tmux](http://tmux.sourceforge.net/) status line.
+Monitoring information for your [tmux](https://tmux.github.io) status line.
 
 `tmux-top` allows you to see your:
 
