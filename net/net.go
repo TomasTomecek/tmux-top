@@ -5,6 +5,7 @@ import (
 	"github.com/TomasTomecek/tmux-top/conf"
 	"io/ioutil"
 	"net"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -105,7 +106,19 @@ func GetNetStats(c *conf.ConfigurationManager) []NetStatDiff {
 
 	new_stats := read_all_net_stats(c)
 
-	for key, value := range new_stats {
+	// slice of keys to preserve order
+	keys := make([]string, len(new_stats))
+
+	i := 0
+	for k := range new_stats {
+		keys[i] = k
+		i++
+	}
+	sort.Strings(keys)
+	fmt.Printf("%s", keys)
+
+	for _, key := range keys {
+		value := new_stats[key]
 		if old_value, exists := old_stats[key]; exists {
 			d := NetStatDiff{
 				Name:    value.Name,

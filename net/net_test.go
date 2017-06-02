@@ -66,4 +66,10 @@ func TestGetIOStats(t *testing.T) {
 	if len(stats) <= 0 {
 		t.Error("no stats for network interfaces")
 	}
+
+	new_stats := GetNetStats(c)
+
+	if stats[0].Name != new_stats[0].Name {
+		t.Error("order of net stats broke")
+	}
 }
