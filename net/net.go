@@ -115,7 +115,6 @@ func GetNetStats(c *conf.ConfigurationManager) []NetStatDiff {
 		i++
 	}
 	sort.Strings(keys)
-	fmt.Printf("%s", keys)
 
 	for _, key := range keys {
 		value := new_stats[key]
