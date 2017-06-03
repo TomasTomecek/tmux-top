@@ -28,4 +28,4 @@
 *.x86_64
 *.hex
 
-cli/cli
+/tmux-top

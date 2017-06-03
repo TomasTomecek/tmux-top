@@ -1,5 +1,7 @@
 TEST_MODULE = conf net humanize load io display
-DESTDIR = 
+PREFIX ?= ${DESTDIR}/usr
+INSTALLDIR=${PREFIX}/bin
+DESTDIR =
 bindir = /usr/bin
 .PHONY: default clean install build test
 
@@ -9,11 +11,10 @@ clean:
 	@rm -v cli/cli 2>/dev/null || :
 
 install:
-	mkdir -p $(DESTDIR)$(bindir)
-	cp -a cli/cli $(DESTDIR)$(bindir)/tmux-top
+	install -D -m 755 tmux-top $(INSTALLDIR)/tmux-top
 
 build:
-	cd cli ; go build
+	go build -o tmux-top ./cmd/tmux-top
 
 test:
 	@for package in $(TEST_MODULE) ; do \
