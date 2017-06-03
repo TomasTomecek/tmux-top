@@ -1,5 +1,3 @@
-[![Build Status](https://drone.io/github.com/TomasTomecek/tmux-top/status.png)](https://drone.io/github.com/TomasTomecek/tmux-top/latest)
-
 tmux-top
 ========
 
@@ -28,14 +26,11 @@ This tool is written in [Go](http://golang.org/). If you want to compile it, you
 ### Go distribution
 
 ```
-go get github.com/TomasTomecek/tmux-top/cli
+go get github.com/TomasTomecek/tmux-top/cmd/tmux-top
 ```
 
-When the command succeeds, `tmux-top` is placed in directory `${GOPATH}/bin` and named `cli`. You can rename it easily:
+When the command succeeds, `tmux-top` binary is placed in directory `${GOPATH}/bin`.
 
-```
-mv ${GOPATH}/bin/{cli,tmux-top}
-```
 
 ### Manual installation
 
