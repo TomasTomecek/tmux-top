@@ -26,7 +26,7 @@ This tool is written in [Go](http://golang.org/). If you want to compile it, you
 ### Go distribution
 
 ```
-go get github.com/TomasTomecek/tmux-top/cmd/tmux-top
+$ go get github.com/TomasTomecek/tmux-top/cmd/tmux-top
 ```
 
 When the command succeeds, `tmux-top` binary is placed in directory `${GOPATH}/bin`.
@@ -35,20 +35,26 @@ When the command succeeds, `tmux-top` binary is placed in directory `${GOPATH}/b
 ### Manual installation
 
 ```
-git clone https://github.com/TomasTomecek/tmux-top.git
+$ git clone https://github.com/TomasTomecek/tmux-top.git
 ```
 
-Once cloned, compile it using well-known process:
+Let's install dependencies now:
 
 ```
-make
-sudo make install
+$ go get gopkg.in/urfave/cli.v1
+```
+
+We can compile and install now:
+
+```
+$ make
+$ sudo make install
 ```
 
 Usage
 -----
 
-There are three subcommands at the moment:
+There are four subcommands at the moment:
 
  1. `tmux-top load` — load of your workstation
  2. `tmux-top mem` — actual memry usage and total memory
@@ -102,8 +108,8 @@ Your configuration may look like this:
 and tmux configuration:
 
 ```shell
-set -g status-left "#(tmux-top n)"
-set -g status-right "#(tmux-top m) #[fg=white]:: #(tmux-top l)"
+$ set -g status-left "#(tmux-top n)"
+$ set -g status-right "#(tmux-top m) #[fg=white]:: #(tmux-top l)"
 ```
 
 Layout inspiration from [this blog post](http://zanshin.net/2013/09/05/my-tmux-configuration/ ).
