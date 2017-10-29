@@ -8,7 +8,7 @@ import (
 	"github.com/TomasTomecek/tmux-top/load"
 	"github.com/TomasTomecek/tmux-top/mem"
 	"github.com/TomasTomecek/tmux-top/net"
-	"github.com/codegangsta/cli"
+	"gopkg.in/urfave/cli.v1"
 	"os"
 )
 
@@ -99,10 +99,10 @@ func print_io(*cli.Context) {
 }
 
 func main() {
-
 	app := cli.NewApp()
-	app.Name = "boom"
-	app.Usage = "make an explosive entrance"
+	app.Version = "0.0.2"
+	app.Name = "tmux-top"
+	app.Usage = "monitoring information for your tmux status line"
 	app.Commands = []cli.Command{
 		{
 			Name:      "net",
