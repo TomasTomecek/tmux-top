@@ -8,7 +8,7 @@ import (
 	"github.com/TomasTomecek/tmux-top/load"
 	"github.com/TomasTomecek/tmux-top/mem"
 	"github.com/TomasTomecek/tmux-top/net"
-	"gopkg.in/urfave/cli.v1"
+	"github.com/urfave/cli"
 	"os"
 )
 

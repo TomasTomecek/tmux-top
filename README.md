@@ -41,7 +41,7 @@ $ git clone https://github.com/TomasTomecek/tmux-top.git
 Let's install dependencies now:
 
 ```
-$ go get gopkg.in/urfave/cli.v1
+$ go get github.com/urfave/cli
 ```
 
 We can compile and install now:
