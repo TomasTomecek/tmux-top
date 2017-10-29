@@ -100,7 +100,7 @@ func print_io(*cli.Context) {
 
 func main() {
 	app := cli.NewApp()
-	app.Version = "0.0.3"
+	app.Version = "0.0.4"
 	app.Name = "tmux-top"
 	app.Usage = "monitoring information for your tmux status line"
 	app.Commands = []cli.Command{
