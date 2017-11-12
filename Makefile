@@ -1,4 +1,4 @@
-TEST_MODULE = conf net humanize load io display
+TEST_MODULE = conf net humanize load io display sens
 PREFIX ?= ${DESTDIR}/usr
 INSTALLDIR=${PREFIX}/bin
 DESTDIR =

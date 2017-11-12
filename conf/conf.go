@@ -88,15 +88,21 @@ type MemConfiguration struct {
 	TotalFg     *string            `json:"total_fg"`
 }
 
+// configuration in a config file
+type SensorsConfiguration struct {
+	Template *string `json:"template"`
+}
+
 type LoadConfiguration struct {
 	Intervals *[]IntervalDisplay `json:"intervals"`
 }
 
 type Configuration struct {
-	Load *LoadConfiguration `json:"load"`
-	Net  *NetConfiguration  `json:"net"`
-	Mem  *MemConfiguration  `json:"mem"`
-	IO   *IOConfiguration   `json:"io"`
+	Load    *LoadConfiguration    `json:"load"`
+	Net     *NetConfiguration     `json:"net"`
+	Mem     *MemConfiguration     `json:"mem"`
+	IO      *IOConfiguration      `json:"io"`
+	Sensors *SensorsConfiguration `json:"sensors"`
 }
 
 func loadConfFromFile(path string) []byte {
@@ -107,7 +113,7 @@ func loadConfFromFile(path string) []byte {
 	return response
 }
 
-func loadConfFromBytes(json_input []byte) *Configuration {
+func LoadConfFromBytes(json_input []byte) *Configuration {
 	var conf *Configuration = new(Configuration)
 	err := json.Unmarshal(json_input, &conf)
 
@@ -123,8 +129,8 @@ func LoadConf() *ConfigurationManager {
 	home_dir := os.Getenv("HOME")
 	bytes := loadConfFromFile(path.Join(home_dir, ".tmux-top"))
 	if len(bytes) > 0 {
-		c.User = loadConfFromBytes(bytes)
+		c.User = LoadConfFromBytes(bytes)
 	}
-	c.Default = loadConfFromBytes([]byte(default_conf))
+	c.Default = LoadConfFromBytes([]byte(default_conf))
 	return c
 }
