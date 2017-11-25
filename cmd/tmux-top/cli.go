@@ -8,6 +8,7 @@ import (
 	"github.com/TomasTomecek/tmux-top/load"
 	"github.com/TomasTomecek/tmux-top/mem"
 	"github.com/TomasTomecek/tmux-top/net"
+	"github.com/TomasTomecek/tmux-top/sens"
 	"github.com/urfave/cli"
 	"os"
 )
@@ -98,6 +99,11 @@ func print_io(*cli.Context) {
 	}
 }
 
+func print_sens(ctx *cli.Context) {
+	template := c.GetSensorsTemplate(ctx.String("format"))
+	sens.PrintSensorStats(template)
+}
+
 func main() {
 	app := cli.NewApp()
 	app.Version = "0.0.4"
@@ -127,6 +133,18 @@ func main() {
 			ShortName: "i",
 			Usage:     "show I/O stats ",
 			Action:    print_io,
+		},
+		{
+			Name:      "sensors",
+			ShortName: "s",
+			Usage:     "show sensor stats (temperature)",
+			Action:    print_sens,
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "format, f",
+					Usage: "Format the output using the given Go template",
+				},
+			},
 		},
 	}
 

@@ -164,5 +164,12 @@ var default_conf string = `
 			"bg_color": "colour1",
 			"fg_color": "white"
 		}]
+	},
+	"sensors": {
+		"template": "{{range $i, $device := .Devices}}{{if eq .Name \"coretemp\"}}{{if gt $device.HighValue 50.0}}Temp: {{range $j, $e := $device.Stats}}{{$e.CurrentTemp}} {{end}}{{end}}{{end}}{{end}}"
 	}
 }`
+
+func GetDefaultConf() string {
+	return default_conf
+}

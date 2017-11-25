@@ -1,5 +1,11 @@
 package conf
 
+import (
+	"fmt"
+	"strings"
+	"text/template"
+)
+
 /*
 This ugly boilerplate code enables user to override default settings
 
@@ -265,4 +271,44 @@ func (c *ConfigurationManager) GetIOWriteLabelFg() string {
 		}
 	}
 	return *c.Default.IO.WriteLabelFg
+}
+
+func replace(input, from, to string) string {
+	return strings.Replace(input, from, to, -1)
+}
+
+func tmux_display(bg, fg string, value interface{}) (response string) {
+	response = fmt.Sprintf("#[bg=%s,fg=%s]%v#[bg=default,fg=default]", bg, fg, value)
+	return
+}
+
+func Init_template() template.Template {
+	tmpl := template.New("")
+	funcMap := template.FuncMap{
+		"replace":      replace,
+		"tmux_display": tmux_display,
+	}
+	tmpl.Funcs(funcMap)
+	return *tmpl
+}
+
+// format -- CLI option
+func (c *ConfigurationManager) GetSensorsTemplate(format string) template.Template {
+	template_s := format
+	if format == "" {
+		template_s = *c.Default.Sensors.Template
+		if c.User != nil {
+			if c.User.Sensors != nil {
+				if c.User.Sensors.Template != nil {
+					template_s = *c.User.Sensors.Template
+				}
+			}
+		}
+	}
+	template := Init_template()
+	t, err := template.Parse(template_s)
+	if err != nil {
+		panic(err)
+	}
+	return *t
 }
