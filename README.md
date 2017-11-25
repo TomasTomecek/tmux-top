@@ -163,6 +163,9 @@ Your configuration may look like this:
         "address_color_bg": "default"
       }
     }
+  },
+  "sensors": {
+    "template": "{{range $i, $device := .Devices}}{{if eq $device.Name \"coretemp\"}}{{range $j, $e := .Stats}}{{if gt .CurrentTemp 50.0}}{{tmux_display \"default\" \"colour1\" $e.CurrentTemp}}{{else if gt $e.CurrentTemp 60.0}}{{tmux_display \"default\" \"colour14\" $e.CurrentTemp}}{{end}} {{end}}{{end}}{{end}}"
   }
 }
 ```
