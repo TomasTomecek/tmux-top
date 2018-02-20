@@ -90,8 +90,8 @@ iwlwifi: sens.DeviceStat{Name:"iwlwifi", LowValue:42, HighValue:42, Stats:[]sens
 coretemp: sens.DeviceStat{Name:"coretemp", LowValue:46, HighValue:46, Stats:[]sens.TemperatureStat{sens.TemperatureStat{Label:"Package id 0", CurrentTemp:46}, sens.TemperatureStat{Label:"Core 0", CurrentTemp:46}, sens.TemperatureStat{Label:"Core 1", CurrentTemp:46}}}
 ```
 
-Each `DeviceStat` has fields `Name` (might not be populated though`, `LowValue`,
-`HighValue` (so you do conditions) and array of actual values, available as
+Each `DeviceStat` has fields `Name` (might not be populated though, `LowValue`,
+`HighValue` (so you can do conditions) and array of actual values, available as
 `Stats`. Let's see a full example:
 ```
 $ tmux-top sensors --format '{{range $i, $device := .Devices}}{{.Name}}: {{range $j, $stat := .Stats}}{{.CurrentTemp}} {{end}}{{printf "\n"}}{{end}}'
