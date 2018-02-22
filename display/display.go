@@ -11,7 +11,7 @@ import (
 )
 
 func DisplayString(value string, bg_color, fg_color string) (response string) {
-	response = fmt.Sprintf("#[bg=%s,fg=%s]%s#[bg=default,fg=default]", bg_color, fg_color, value)
+	response = fmt.Sprintf("#[bg=%s,fg=%s]%s", bg_color, fg_color, value)
 	return
 }
 
@@ -25,11 +25,11 @@ func PrintFloat64(value float64, precision int, bg_color, fg_color string, human
 	if bg_color == "" && fg_color == "" {
 		response = float_str
 	} else if bg_color == "" {
-		response = fmt.Sprintf("#[fg=%s]%s#[fg=default]", fg_color, float_str)
+		response = fmt.Sprintf("#[fg=%s]%s", fg_color, float_str)
 	} else if fg_color == "" {
-		response = fmt.Sprintf("#[bg=%s]%s#[bg=default]", bg_color, float_str)
+		response = fmt.Sprintf("#[bg=%s]%s", bg_color, float_str)
 	} else {
-		response = fmt.Sprintf("#[bg=%s,fg=%s]%s#[bg=default,fg=default]", bg_color, fg_color, float_str)
+		response = fmt.Sprintf("#[bg=%s,fg=%s]%s", bg_color, fg_color, float_str)
 	}
 	return
 }
