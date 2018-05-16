@@ -64,6 +64,63 @@ Usage
  4. `tmux-top sensors` — show sensor stats (temperature)
 
 
+Configuration
+-------------
+
+[This json](https://github.com/TomasTomecek/tmux-top/blob/master/conf/default_json.go) contains default configuration. If you want to change something, just override the json and store it in `~/.tmux-top`. You can change whatever you want. If the value is not found in your configuration file, it's loaded from default one.
+
+Your configuration may look like this:
+
+```json
+{
+  "net": {
+    "interfaces": {
+      "enp0s25": {
+        "alias": "E",
+        "label_color_fg": "white",
+        "label_color_bg": "default",
+        "address_color_fg": "colour4",
+        "address_color_bg": "default"
+      },
+      "enp5s0": {
+        "alias": "E",
+        "label_color_fg": "white",
+        "label_color_bg": "default",
+        "address_color_fg": "colour4",
+        "address_color_bg": "default"
+      },
+      "wlp3s0": {
+        "alias": "W",
+        "label_color_fg": "white",
+        "label_color_bg": "default",
+        "address_color_fg": "green",
+        "address_color_bg": "default"
+      },
+      "tun0": {
+        "alias": "V",
+        "label_color_fg": "white",
+        "label_color_bg": "default",
+        "address_color_fg": "colour3",
+        "address_color_bg": "default"
+      }
+    }
+  },
+  "sensors": {
+    "template": "{{range $i, $device := .Devices}}{{if eq $device.Name \"coretemp\"}}{{range $j, $e := .Stats}}{{if gt .CurrentTemp 50.0}}{{tmux_display \"default\" \"colour1\" $e.CurrentTemp}}{{else if gt $e.CurrentTemp 60.0}}{{tmux_display \"default\" \"colour14\" $e.CurrentTemp}}{{end}} {{end}}{{end}}{{end}}"
+  }
+}
+```
+
+and tmux configuration:
+
+```shell
+$ tmux set -g status-left "#(tmux-top n)"
+$ tmux set -g status-right "#(tmux-top m) #[fg=white]:: #(tmux-top l)"
+```
+
+Layout inspiration is coming from [this blog post](http://zanshin.net/2013/09/05/my-tmux-configuration/ ).
+
+
 Sensors
 -------
 
@@ -122,62 +179,6 @@ which would yield
 
 all of the data is coming from `/sys/class/hwmon/*`.
 
-
-Configuration
--------------
-
-[This json](https://github.com/TomasTomecek/tmux-top/blob/master/conf/default_json.go) contains default configuration. If you want to change something, just override the json and store it in `~/.tmux-top`. You can change whatever you want. If the value is not found in your configuration file, it's loaded from default one.
-
-Your configuration may look like this:
-
-```json
-{
-  "net": {
-    "interfaces": {
-      "enp0s25": {
-        "alias": "E",
-        "label_color_fg": "white",
-        "label_color_bg": "default",
-        "address_color_fg": "colour4",
-        "address_color_bg": "default"
-      },
-      "enp5s0": {
-        "alias": "E",
-        "label_color_fg": "white",
-        "label_color_bg": "default",
-        "address_color_fg": "colour4",
-        "address_color_bg": "default"
-      },
-      "wlp3s0": {
-        "alias": "W",
-        "label_color_fg": "white",
-        "label_color_bg": "default",
-        "address_color_fg": "green",
-        "address_color_bg": "default"
-      },
-      "tun0": {
-        "alias": "V",
-        "label_color_fg": "white",
-        "label_color_bg": "default",
-        "address_color_fg": "colour3",
-        "address_color_bg": "default"
-      }
-    }
-  },
-  "sensors": {
-    "template": "{{range $i, $device := .Devices}}{{if eq $device.Name \"coretemp\"}}{{range $j, $e := .Stats}}{{if gt .CurrentTemp 50.0}}{{tmux_display \"default\" \"colour1\" $e.CurrentTemp}}{{else if gt $e.CurrentTemp 60.0}}{{tmux_display \"default\" \"colour14\" $e.CurrentTemp}}{{end}} {{end}}{{end}}{{end}}"
-  }
-}
-```
-
-and tmux configuration:
-
-```shell
-$ set -g status-left "#(tmux-top n)"
-$ set -g status-right "#(tmux-top m) #[fg=white]:: #(tmux-top l)"
-```
-
-Layout inspiration from [this blog post](http://zanshin.net/2013/09/05/my-tmux-configuration/ ).
 
 Other goodies for tmux
 ----------------------
