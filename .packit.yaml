@@ -1,0 +1,5 @@
+---
+specfile_path: tmux-top.spec
+synced_files:
+  - tmux-top.spec
+downstream_package_name: tmux-top
