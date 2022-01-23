@@ -4,23 +4,23 @@
 %global project         TomasTomecek
 %global repo            tmux-top
 # https://github.com/TomasTomecek/tmux-top
-%global import_path     %{provider}.%{provider_tld}/%{project}/%{repo}
+%global goipath         %{provider}.%{provider_tld}/%{project}/%{repo}
+%global forgeurl        https://%{goipath}
 %global commit          910ef1f72549a703c3c39abaefefe9a80d0b22fd
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
+%global golicenses    LICENSE
+%gometa
 
 Name:           tmux-top
-Version:        0.0.4
-Release:        4%{?dist}
+Version:        0.1.0
+Release:        1%{?dist}
 Summary:        Monitoring information for your tmux status line.
 License:        GPLv2+
-URL:            https://%{import_path}
-Source0:        https://%{import_path}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
+URL:            %{gourl}
+Source0:        %{gosource}
 
 BuildRequires:  make
-BuildRequires:  compiler(golang)
 BuildRequires:  golang(github.com/urfave/cli)
-
-ExclusiveArch:  %{go_arches}
 
 
 %description
@@ -35,18 +35,15 @@ tmux-top allows you to see your:
 
 
 %prep
-%setup -q -n %{repo}-%{commit}
+%autosetup -n %{name}-%{commit}
 
 %build
-# Make link for tmux-top itself
-mkdir -p src/github.com/%{project}
-ln -s ../../../ src/github.com/%{project}/%{repo}
-export GOPATH=$(pwd):%{gopath}
-make
+%gobuild -o %{gobuilddir}/bin/%{name} %{goipath}/cmd/tmux-top
 
 
 %install
-make install DESTDIR=%{buildroot}
+install -m 0755 -vd %{buildroot}%{_bindir}
+install -m 0755 -vp %{gobuilddir}/bin/tmux-top %{buildroot}%{_bindir}/
 
 
 %check
@@ -55,7 +52,8 @@ make test
 
 
 %files
-%doc README.md LICENSE
+%doc README.md
+%license LICENSE
 %{_bindir}/%{name}
 
 
