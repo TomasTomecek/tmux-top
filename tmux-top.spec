@@ -13,7 +13,7 @@
 # 1. We need to set version
 # 2. And cannot set commit macro
 # 3. Place version before gometa
-Version:        0.1.0
+Version:        0.1.1
 %gometa
 
 Name:           tmux-top
@@ -66,6 +66,27 @@ make test
 
 
 %changelog
+* Wed Jun 08 2022 Tomas Tomecek <ttomecek@redhat.com> - 0.1.1-1
+- 0.1.0 upstream release
+
+* Sat Jan 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.4-10
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+
+* Fri Jul 23 2021 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.4-9
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
+* Wed Jan 27 2021 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.4-8
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+
+* Wed Jul 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.4-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
+
+* Fri Jan 31 2020 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.4-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
+* Sat Jul 27 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.4-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
 * Sun Feb 03 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.4-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
