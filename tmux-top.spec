@@ -21,7 +21,8 @@ Release:        1%{?dist}
 Summary:        Monitoring information for your tmux status line.
 License:        GPLv2+
 URL:            %{gourl}
-Source0:        %{gosource}
+# gosource macro doesn't work as it expects vTAG tagging scheme
+Source0:        https://%{goipath}/archive/%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  make
 BuildRequires:  golang(github.com/urfave/cli)
