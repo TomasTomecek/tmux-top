@@ -17,7 +17,7 @@ Version:        0.1.1
 %gometa
 
 Name:           tmux-top
-Release:        1%{?dist}
+Release:        3%{?dist}
 Summary:        Monitoring information for your tmux status line.
 License:        GPLv2+
 URL:            %{gourl}
@@ -67,8 +67,27 @@ make test
 
 
 %changelog
+* Tue Jul 19 2022 Maxwell G <gotmax@e.email> - 0.1.1-3
+- Rebuild for CVE-2022-{1705,32148,30631,30633,28131,30635,30632,30630,1962} in
+  golang
+
+* Sat Jun 18 2022 Robert-André Mauchin <zebob.m@gmail.com> - 0.1.1-2
+- Rebuilt for CVE-2022-1996, CVE-2022-24675, CVE-2022-28327, CVE-2022-27191,
+  CVE-2022-29526, CVE-2022-30629
+
 * Wed Jun 08 2022 Tomas Tomecek <ttomecek@redhat.com> - 0.1.1-1
-- 0.1.0 upstream release
+- 0.1.1 release (Tomas Tomecek)
+- packit: use propose downstream (Tomas Tomecek)
+- packit.yaml (Tomas Tomecek)
+- modernize spec file (Tomas Tomecek)
+- update dependencies (Tomas Tomecek)
+- Use Go modules (Philipp Schmitt)
+- Enable copr builds for packit config (Dominika Hodovska)
+- Add upstream_package_name to packit conf (Dominika Hodovska)
+- [packit] master downstream sync (Tomas Tomecek)
+- better readme ordering (Tomas Tomecek)
+- don't set coloring to default after displaying a val (Tomas Tomecek)
+- readme: typos, grammar (Tomas Tomecek)
 
 * Sat Jan 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.4-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
