@@ -152,6 +152,18 @@ func main() {
 				},
 			},
 		},
+		{
+			Name:  "generate-man",
+			Usage: "Generate man page",
+			Action: func(ctx *cli.Context) error {
+				man, err := app.ToMan()
+				if err != nil {
+					return err
+				}
+				fmt.Print(man)
+				return nil
+			},
+		},
 	}
 
 	app.Run(os.Args)

@@ -25,7 +25,7 @@ URL:            %{gourl}
 Source0:        https://%{goipath}/archive/%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  make
-BuildRequires:  golang(github.com/urfave/cli)
+BuildRequires:  golang(github.com/urfave/cli/v2)
 
 
 %description
@@ -45,12 +45,17 @@ tmux-top allows you to see your:
 
 %build
 %gobuild -o %{gobuilddir}/bin/%{name} %{goipath}/cmd/tmux-top
+# Generate manpage
+%{gobuilddir}/bin/%{name} generate-man > %{name}.1
 
 
 %install
 %gopkginstall
 install -m 0755 -vd %{buildroot}%{_bindir}
 install -m 0755 -vp %{gobuilddir}/bin/%{name} %{buildroot}%{_bindir}/
+# Install manpage
+install -m 0755 -vd %{buildroot}%{_mandir}/man1
+install -m 0644 -vp %{name}.1 %{buildroot}%{_mandir}/man1/
 
 
 %check
@@ -62,6 +67,7 @@ make test
 %license %{golicenses}
 %doc %{godocs}
 %{_bindir}/%{name}
+%{_mandir}/man1/%{name}.1*
 
 %gopkgfiles
 
