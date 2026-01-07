@@ -17,9 +17,10 @@ Version:        0.1.1
 %gometa
 
 Name:           tmux-top
-Release:        3%{?dist}
+Release:        %autorelease
 Summary:        Monitoring information for your tmux status line.
-License:        GPLv2+
+# Automatically converted from old format: GPLv2+ - review is highly recommended.
+License:        GPL-2.0-or-later
 URL:            %{gourl}
 # gosource macro doesn't work as it expects vTAG tagging scheme
 Source0:        https://%{goipath}/archive/%{version}/%{name}-%{version}.tar.gz
@@ -73,88 +74,4 @@ make test
 
 
 %changelog
-* Tue Jul 19 2022 Maxwell G <gotmax@e.email> - 0.1.1-3
-- Rebuild for CVE-2022-{1705,32148,30631,30633,28131,30635,30632,30630,1962} in
-  golang
-
-* Sat Jun 18 2022 Robert-André Mauchin <zebob.m@gmail.com> - 0.1.1-2
-- Rebuilt for CVE-2022-1996, CVE-2022-24675, CVE-2022-28327, CVE-2022-27191,
-  CVE-2022-29526, CVE-2022-30629
-
-* Wed Jun 08 2022 Tomas Tomecek <ttomecek@redhat.com> - 0.1.1-1
-- 0.1.1 release (Tomas Tomecek)
-- packit: use propose downstream (Tomas Tomecek)
-- packit.yaml (Tomas Tomecek)
-- modernize spec file (Tomas Tomecek)
-- update dependencies (Tomas Tomecek)
-- Use Go modules (Philipp Schmitt)
-- Enable copr builds for packit config (Dominika Hodovska)
-- Add upstream_package_name to packit conf (Dominika Hodovska)
-- [packit] master downstream sync (Tomas Tomecek)
-- better readme ordering (Tomas Tomecek)
-- don't set coloring to default after displaying a val (Tomas Tomecek)
-- readme: typos, grammar (Tomas Tomecek)
-
-* Sat Jan 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.4-10
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
-
-* Fri Jul 23 2021 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.4-9
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
-
-* Wed Jan 27 2021 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.4-8
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
-
-* Wed Jul 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.4-7
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
-
-* Fri Jan 31 2020 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.4-6
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
-
-* Sat Jul 27 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.4-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
-
-* Sun Feb 03 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.4-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
-
-* Sat Jul 14 2018 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.4-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
-
-* Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.4-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
-
-* Sun Oct 29 2017 Tomas Tomecek <ttomecek@redhat.com> - 0.0.4-1
-- new upstream release 0.0.4
-
-* Sun Oct 29 2017 Tomas Tomecek <ttomecek@redhat.com> - 0.0.3-1
-- new upstream release 0.0.3
-
-* Thu Aug 03 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.2-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
-
-* Thu Jul 27 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.2-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
-
-* Sat Jun 03 2017 Tomas Tomecek <ttomecek@redhat.com> - 0.0.2-1
-- new upstream release 0.0.2
-
-* Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.1-7
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
-
-* Thu Jul 21 2016 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.0.1-6
-- https://fedoraproject.org/wiki/Changes/golang1.7
-
-* Mon Feb 22 2016 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.0.1-5
-- https://fedoraproject.org/wiki/Changes/golang1.6
-
-* Fri Feb 05 2016 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.1-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
-
-* Fri Jun 19 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.0.1-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
-
-* Mon Mar 16 2015 Tomas Tomecek <ttomecek@redhat.com> - 0.0.1-2
-- add devel subpackage (patch by jchaloup@redhat.com)
-
-* Fri Mar 13 2015 Tomas Tomecek <ttomecek@redhat.com> - 0.0.1-1
-- initial release
-
+%autochangelog
