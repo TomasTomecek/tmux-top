@@ -9,13 +9,13 @@ import (
 	"github.com/TomasTomecek/tmux-top/mem"
 	"github.com/TomasTomecek/tmux-top/net"
 	"github.com/TomasTomecek/tmux-top/sens"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 	"os"
 )
 
 var c *conf.ConfigurationManager = conf.LoadConf()
 
-func print_mem(*cli.Context) {
+func print_mem(ctx *cli.Context) error {
 	used, total := mem.GetMemStats()
 	mem_intervals := c.GetMemIntervals()
 	separator := c.GetMemSeparator()
@@ -28,9 +28,10 @@ func print_mem(*cli.Context) {
 		display.DisplayFloat64(used, 2, mem_intervals, true, "B", total),
 		display.DisplayString(separator, separator_bg, separator_fg),
 		display.PrintFloat64(total, 2, total_bg, total_fg, true, "B"))
+	return nil
 }
 
-func print_load(*cli.Context) {
+func print_load(ctx *cli.Context) error {
 	one, five, fifteen := load.GetCPULoad()
 	load_intervals := c.GetLoadIntervals()
 
@@ -38,9 +39,10 @@ func print_load(*cli.Context) {
 		display.DisplayFloat64(one, 2, load_intervals, false, "", 0.0),
 		display.DisplayFloat64(five, 2, load_intervals, false, "", 0.0),
 		display.DisplayFloat64(fifteen, 2, load_intervals, false, "", 0.0))
+	return nil
 }
 
-func print_net(*cli.Context) {
+func print_net(ctx *cli.Context) error {
 	net_stats := net.GetNetStats(c)
 	conf_interfaces := c.GetNetInterfaces()
 	net_intervals := c.GetNetIntervals()
@@ -67,9 +69,10 @@ func print_net(*cli.Context) {
 				rendered_down)
 		}
 	}
+	return nil
 }
 
-func print_io(*cli.Context) {
+func print_io(ctx *cli.Context) error {
 	io_stats := io.GetIOStats(c)
 	conf_devices := c.GetIODevices()
 	io_intervals := c.GetIOIntervals()
@@ -97,11 +100,13 @@ func print_io(*cli.Context) {
 				rendered_write)
 		}
 	}
+	return nil
 }
 
-func print_sens(ctx *cli.Context) {
+func print_sens(ctx *cli.Context) error {
 	template := c.GetSensorsTemplate(ctx.String("format"))
 	sens.PrintSensorStats(template)
+	return nil
 }
 
 func main() {
@@ -109,41 +114,54 @@ func main() {
 	app.Version = "0.0.4"
 	app.Name = "tmux-top"
 	app.Usage = "monitoring information for your tmux status line"
-	app.Commands = []cli.Command{
+	app.Commands = []*cli.Command{
 		{
-			Name:      "net",
-			ShortName: "n",
-			Usage:     "show net stats ",
-			Action:    print_net,
+			Name:    "net",
+			Aliases: []string{"n"},
+			Usage:   "show net stats",
+			Action:  print_net,
 		},
 		{
-			Name:      "mem",
-			ShortName: "m",
-			Usage:     "show memory stats ",
-			Action:    print_mem,
+			Name:    "mem",
+			Aliases: []string{"m"},
+			Usage:   "show memory stats",
+			Action:  print_mem,
 		},
 		{
-			Name:      "load",
-			ShortName: "l",
-			Usage:     "show load",
-			Action:    print_load,
+			Name:    "load",
+			Aliases: []string{"l"},
+			Usage:   "show load",
+			Action:  print_load,
 		},
 		{
-			Name:      "io",
-			ShortName: "i",
-			Usage:     "show I/O stats ",
-			Action:    print_io,
+			Name:    "io",
+			Aliases: []string{"i"},
+			Usage:   "show I/O stats",
+			Action:  print_io,
 		},
 		{
-			Name:      "sensors",
-			ShortName: "s",
-			Usage:     "show sensor stats (temperature)",
-			Action:    print_sens,
+			Name:    "sensors",
+			Aliases: []string{"s"},
+			Usage:   "show sensor stats (temperature)",
+			Action:  print_sens,
 			Flags: []cli.Flag{
-				cli.StringFlag{
-					Name:  "format, f",
-					Usage: "Format the output using the given Go template",
+				&cli.StringFlag{
+					Name:    "format",
+					Aliases: []string{"f"},
+					Usage:   "Format the output using the given Go template",
 				},
+			},
+		},
+		{
+			Name:  "generate-man",
+			Usage: "Generate man page",
+			Action: func(ctx *cli.Context) error {
+				man, err := app.ToMan()
+				if err != nil {
+					return err
+				}
+				fmt.Print(man)
+				return nil
 			},
 		},
 	}

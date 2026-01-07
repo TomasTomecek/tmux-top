@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/TomasTomecek/tmux-top/humanize"
-	"io/ioutil"
 	"math"
 	"os"
 	"path"
@@ -106,7 +105,7 @@ type Configuration struct {
 }
 
 func loadConfFromFile(path string) []byte {
-	response, _ := ioutil.ReadFile(path)
+	response, _ := os.ReadFile(path)
 	/*if err != nil {
 		fmt.Println("error:", err)
 	}*/
