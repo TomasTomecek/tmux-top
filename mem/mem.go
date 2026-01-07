@@ -3,7 +3,7 @@ package mem
 import (
 	"fmt"
 	"github.com/TomasTomecek/tmux-top/humanize"
-	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
 	"unicode"
@@ -11,7 +11,7 @@ import (
 
 func GetMemStats() (used, total float64) {
 	var free, buffers, cached, available float64
-	contents, err := ioutil.ReadFile("/proc/meminfo")
+	contents, err := os.ReadFile("/proc/meminfo")
 	if err != nil {
 		return
 	}

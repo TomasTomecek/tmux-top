@@ -2,13 +2,13 @@ package load
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
 )
 
 func GetCPULoad() (one, five, fifteen float64) {
-	contents, err := ioutil.ReadFile("/proc/loadavg")
+	contents, err := os.ReadFile("/proc/loadavg")
 	if err != nil {
 		return
 	}
