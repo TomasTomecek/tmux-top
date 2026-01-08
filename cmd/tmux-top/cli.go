@@ -3,13 +3,14 @@ package main
 import (
 	"fmt"
 	"github.com/TomasTomecek/tmux-top/conf"
+	"github.com/TomasTomecek/tmux-top/disk"
 	display "github.com/TomasTomecek/tmux-top/display"
 	"github.com/TomasTomecek/tmux-top/io"
 	"github.com/TomasTomecek/tmux-top/load"
 	"github.com/TomasTomecek/tmux-top/mem"
 	"github.com/TomasTomecek/tmux-top/net"
 	"github.com/TomasTomecek/tmux-top/sens"
-	"github.com/urfave/cli/v2"
+	cli "github.com/urfave/cli/v2"
 	"os"
 )
 
@@ -109,9 +110,15 @@ func print_sens(ctx *cli.Context) error {
 	return nil
 }
 
+func print_disk(ctx *cli.Context) error {
+	template := c.GetDiskTemplate(ctx.String("format"))
+	disk.PrintDiskStats(template, c)
+	return nil
+}
+
 func main() {
 	app := cli.NewApp()
-	app.Version = "0.0.4"
+	app.Version = "0.1.1"
 	app.Name = "tmux-top"
 	app.Usage = "monitoring information for your tmux status line"
 	app.Commands = []*cli.Command{
@@ -144,6 +151,19 @@ func main() {
 			Aliases: []string{"s"},
 			Usage:   "show sensor stats (temperature)",
 			Action:  print_sens,
+			Flags: []cli.Flag{
+				&cli.StringFlag{
+					Name:    "format",
+					Aliases: []string{"f"},
+					Usage:   "Format the output using the given Go template",
+				},
+			},
+		},
+		{
+			Name:    "disk",
+			Aliases: []string{"d"},
+			Usage:   "show disk space stats",
+			Action:  print_disk,
 			Flags: []cli.Flag{
 				&cli.StringFlag{
 					Name:    "format",

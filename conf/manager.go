@@ -273,6 +273,17 @@ func (c *ConfigurationManager) GetIOWriteLabelFg() string {
 	return *c.Default.IO.WriteLabelFg
 }
 
+func (c *ConfigurationManager) GetDiskMounts() ([]string, error) {
+	if c.User != nil {
+		if c.User.Disk != nil {
+			if c.User.Disk.Mounts != nil {
+				return *c.User.Disk.Mounts, nil
+			}
+		}
+	}
+	return *c.Default.Disk.Mounts, nil
+}
+
 func replace(input, from, to string) string {
 	return strings.Replace(input, from, to, -1)
 }
@@ -301,6 +312,27 @@ func (c *ConfigurationManager) GetSensorsTemplate(format string) template.Templa
 			if c.User.Sensors != nil {
 				if c.User.Sensors.Template != nil {
 					template_s = *c.User.Sensors.Template
+				}
+			}
+		}
+	}
+	template := Init_template()
+	t, err := template.Parse(template_s)
+	if err != nil {
+		panic(err)
+	}
+	return *t
+}
+
+// format -- CLI option
+func (c *ConfigurationManager) GetDiskTemplate(format string) template.Template {
+	template_s := format
+	if format == "" {
+		template_s = *c.Default.Disk.Template
+		if c.User != nil {
+			if c.User.Disk != nil {
+				if c.User.Disk.Template != nil {
+					template_s = *c.User.Disk.Template
 				}
 			}
 		}
