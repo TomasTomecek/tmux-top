@@ -88,6 +88,11 @@ type MemConfiguration struct {
 }
 
 // configuration in a config file
+type DiskConfiguration struct {
+	Mounts   *[]string `json:"mounts"`
+	Template *string   `json:"template"`
+}
+
 type SensorsConfiguration struct {
 	Template *string `json:"template"`
 }
@@ -101,6 +106,7 @@ type Configuration struct {
 	Net     *NetConfiguration     `json:"net"`
 	Mem     *MemConfiguration     `json:"mem"`
 	IO      *IOConfiguration      `json:"io"`
+	Disk    *DiskConfiguration    `json:"disk"`
 	Sensors *SensorsConfiguration `json:"sensors"`
 }
 

@@ -165,6 +165,13 @@ var default_conf string = `
 			"fg_color": "white"
 		}]
 	},
+	"disk": {
+		"mounts": [
+			"/",
+			"/home"
+		],
+		"template": "{{range $i, $mount := .Mounts}}{{$mount.Device}} {{$mount.UsedPercent | printf \"%.1f\"}}% {{end}}"
+	},
 	"sensors": {
 		"template": "{{range $i, $device := .Devices}}{{if eq .Name \"coretemp\"}}{{if gt $device.HighValue 50.0}}Temp: {{range $j, $e := $device.Stats}}{{$e.CurrentTemp}} {{end}}{{end}}{{end}}{{end}}"
 	}
