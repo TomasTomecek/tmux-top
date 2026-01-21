@@ -174,6 +174,30 @@ var default_conf string = `
 	},
 	"sensors": {
 		"template": "{{range $i, $device := .Devices}}{{if eq .Name \"coretemp\"}}{{if gt $device.HighValue 50.0}}Temp: {{range $j, $e := $device.Stats}}{{$e.CurrentTemp}} {{end}}{{end}}{{end}}{{end}}"
+	},
+	"journal": {
+		"intervals": [{
+			"to": "1",
+			"bg_color": "default",
+			"fg_color": "green"
+		}, {
+			"from": "1",
+			"to": "5",
+			"bg_color": "default",
+			"fg_color": "colour166"
+		}, {
+			"from": "5",
+			"to": "10",
+			"bg_color": "colour166",
+			"fg_color": "white"
+		}, {
+			"from": "10",
+			"bg_color": "colour1",
+			"fg_color": "white"
+		}],
+		"label_bg": "default",
+		"label_fg": "white",
+		"template": "{{if gt .ErrorCount 0}}Errors: {{.ErrorCount}}{{end}} {{if gt .WarningCount 0}}Warnings: {{.WarningCount}}{{end}} ({{.TimeFrame}})"
 	}
 }`
 

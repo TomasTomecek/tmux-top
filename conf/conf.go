@@ -101,6 +101,13 @@ type LoadConfiguration struct {
 	Intervals *[]IntervalDisplay `json:"intervals"`
 }
 
+type JournalConfiguration struct {
+	Intervals *[]IntervalDisplay `json:"intervals"`
+	LabelBg   *string            `json:"label_bg"`
+	LabelFg   *string            `json:"label_fg"`
+	Template  *string            `json:"template"`
+}
+
 type Configuration struct {
 	Load    *LoadConfiguration    `json:"load"`
 	Net     *NetConfiguration     `json:"net"`
@@ -108,6 +115,7 @@ type Configuration struct {
 	IO      *IOConfiguration      `json:"io"`
 	Disk    *DiskConfiguration    `json:"disk"`
 	Sensors *SensorsConfiguration `json:"sensors"`
+	Journal *JournalConfiguration `json:"journal"`
 }
 
 func loadConfFromFile(path string) []byte {

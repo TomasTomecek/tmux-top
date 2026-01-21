@@ -6,6 +6,7 @@ import (
 	"github.com/TomasTomecek/tmux-top/disk"
 	display "github.com/TomasTomecek/tmux-top/display"
 	"github.com/TomasTomecek/tmux-top/io"
+	"github.com/TomasTomecek/tmux-top/journal"
 	"github.com/TomasTomecek/tmux-top/load"
 	"github.com/TomasTomecek/tmux-top/mem"
 	"github.com/TomasTomecek/tmux-top/net"
@@ -116,6 +117,30 @@ func print_disk(ctx *cli.Context) error {
 	return nil
 }
 
+func print_journal(ctx *cli.Context) error {
+	timeframe := ctx.String("timeframe")
+	format := ctx.String("format")
+
+	if format == "" {
+		// Simple display mode with intervals
+		errorCount, err := journal.GetJournalErrorCount(timeframe)
+		if err != nil {
+			fmt.Printf("Journal unavailable")
+			return nil
+		}
+
+		journal_intervals := c.GetJournalIntervals()
+		fmt.Printf("%s %s",
+			display.DisplayString("J", c.GetJournalLabelBg(), c.GetJournalLabelFg()),
+			display.DisplayFloat64(float64(errorCount), 0, journal_intervals, false, "", 0.0))
+	} else {
+		// Template mode
+		template := c.GetJournalTemplate(format)
+		journal.PrintJournalStats(template, timeframe)
+	}
+	return nil
+}
+
 func main() {
 	app := cli.NewApp()
 	app.Version = "0.1.1"
@@ -165,6 +190,25 @@ func main() {
 			Usage:   "show disk space stats",
 			Action:  print_disk,
 			Flags: []cli.Flag{
+				&cli.StringFlag{
+					Name:    "format",
+					Aliases: []string{"f"},
+					Usage:   "Format the output using the given Go template",
+				},
+			},
+		},
+		{
+			Name:    "journal",
+			Aliases: []string{"j"},
+			Usage:   "show journald error counts",
+			Action:  print_journal,
+			Flags: []cli.Flag{
+				&cli.StringFlag{
+					Name:    "timeframe",
+					Aliases: []string{"t"},
+					Value:   "1h",
+					Usage:   "Time window for error aggregation (1m, 5m, 1h, 24h)",
+				},
 				&cli.StringFlag{
 					Name:    "format",
 					Aliases: []string{"f"},
