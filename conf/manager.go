@@ -344,3 +344,57 @@ func (c *ConfigurationManager) GetDiskTemplate(format string) template.Template 
 	}
 	return *t
 }
+
+func (c *ConfigurationManager) GetJournalIntervals() []IntervalDisplay {
+	if c.User != nil {
+		if c.User.Journal != nil {
+			if c.User.Journal.Intervals != nil {
+				return *c.User.Journal.Intervals
+			}
+		}
+	}
+	return *c.Default.Journal.Intervals
+}
+
+func (c *ConfigurationManager) GetJournalLabelBg() string {
+	if c.User != nil {
+		if c.User.Journal != nil {
+			if c.User.Journal.LabelBg != nil {
+				return *c.User.Journal.LabelBg
+			}
+		}
+	}
+	return *c.Default.Journal.LabelBg
+}
+
+func (c *ConfigurationManager) GetJournalLabelFg() string {
+	if c.User != nil {
+		if c.User.Journal != nil {
+			if c.User.Journal.LabelFg != nil {
+				return *c.User.Journal.LabelFg
+			}
+		}
+	}
+	return *c.Default.Journal.LabelFg
+}
+
+// format -- CLI option
+func (c *ConfigurationManager) GetJournalTemplate(format string) template.Template {
+	template_s := format
+	if format == "" {
+		template_s = *c.Default.Journal.Template
+		if c.User != nil {
+			if c.User.Journal != nil {
+				if c.User.Journal.Template != nil {
+					template_s = *c.User.Journal.Template
+				}
+			}
+		}
+	}
+	template := Init_template()
+	t, err := template.Parse(template_s)
+	if err != nil {
+		panic(err)
+	}
+	return *t
+}

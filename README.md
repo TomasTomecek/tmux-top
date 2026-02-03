@@ -9,7 +9,9 @@ Monitoring information for your [tmux](https://tmux.github.io) status line.
  * memory usage
  * network statistics
  * I/O statistics
+ * disk usage
  * temperature
+ * systemd journal errors and warnings
 
 ![tmux-top sample](https://raw.githubusercontent.com/TomasTomecek/tmux-top/master/docs/tmux_top_example.png)
 ![tmux-top sample](https://raw.githubusercontent.com/TomasTomecek/tmux-top/master/docs/tmux_top_example2.png)
@@ -61,7 +63,9 @@ Usage
  2. `tmux-top mem` — actual memry usage and total memory
  3. `tmux-top net` — network statistics: IP address, network interface and current bandwidth
  4. `tmux-top io` — I/O statistics: current reads and writes
- 4. `tmux-top sensors` — show sensor stats (temperature)
+ 5. `tmux-top disk` — disk usage statistics
+ 6. `tmux-top sensors` — show sensor stats (temperature)
+ 7. `tmux-top journal` — systemd journal error and warning counts
 
 
 Configuration
@@ -115,7 +119,7 @@ and tmux configuration:
 
 ```shell
 $ tmux set -g status-left "#(tmux-top n)"
-$ tmux set -g status-right "#(tmux-top m) #[fg=white]:: #(tmux-top l)"
+$ tmux set -g status-right "#(tmux-top m) #[fg=white]:: #(tmux-top l) #[fg=white]:: #(tmux-top j)"
 ```
 
 Layout inspiration is coming from [this blog post](http://zanshin.net/2013/09/05/my-tmux-configuration/ ).
@@ -178,6 +182,47 @@ which would yield
 ```
 
 all of the data is coming from `/sys/class/hwmon/*`.
+
+
+Journal
+-------
+
+The `journal` command monitors systemd journal for errors, warnings, and critical messages. It uses Go templates like the sensors command, allowing flexible output formatting.
+
+The command accepts a `--timeframe` option to specify the time window for error aggregation:
+```
+$ tmux-top journal --timeframe=1h   # Last hour (default)
+$ tmux-top journal --timeframe=5m   # Last 5 minutes
+```
+
+You can see the available data structure:
+```
+$ tmux-top journal --format='{{.|printf "%#v"}}'
+journal.JournalStats{TimeFrame:"1h", ErrorCount:13, WarningCount:0, CriticalCount:437, TotalCount:450}
+```
+
+The data structure provides:
+- `TimeFrame` — the time window being monitored
+- `ErrorCount` — number of error-level messages (priority 3)
+- `WarningCount` — number of warning-level messages (priority 4)
+- `CriticalCount` — number of critical/alert/emergency messages (priorities 0-2)
+- `TotalCount` — sum of all error, warning, and critical messages
+
+Simple example showing only errors and warnings:
+```
+$ tmux-top journal --format='{{if gt .ErrorCount 0}}E:{{.ErrorCount}} {{end}}{{if gt .WarningCount 0}}W:{{.WarningCount}}{{end}}'
+E:13
+```
+
+The default template shows all counts when present:
+```
+$ tmux-top journal --format='{{if gt .ErrorCount 0}}Errors: {{.ErrorCount}}{{end}} {{if gt .WarningCount 0}}Warnings: {{.WarningCount}}{{end}} ({{.TimeFrame}})'
+Errors: 13 (1h)
+```
+
+Without the `--format` flag, the command displays a simple colored indicator based on error count intervals defined in the configuration.
+
+The journal command requires systemd and journalctl. If they're unavailable, it gracefully displays "Journal unavailable".
 
 
 Other goodies for tmux
