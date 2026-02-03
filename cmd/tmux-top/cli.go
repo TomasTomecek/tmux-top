@@ -143,7 +143,7 @@ func print_journal(ctx *cli.Context) error {
 
 func main() {
 	app := cli.NewApp()
-	app.Version = "0.1.1"
+	app.Version = "1.0.0"
 	app.Name = "tmux-top"
 	app.Usage = "monitoring information for your tmux status line"
 	app.Commands = []*cli.Command{
