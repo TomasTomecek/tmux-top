@@ -1,98 +1,162 @@
-tmux-top
-========
+# tmux-top
 
-Monitoring information for your [tmux](https://tmux.github.io) status line.
+[![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](LICENSE)
+[![Go Version](https://img.shields.io/badge/Go-1.21%2B-00ADD8?logo=go)](go.mod)
 
-`tmux-top` allows you to see:
-
- * load
- * memory usage
- * network statistics
- * I/O statistics
- * disk usage
- * temperature
- * systemd journal errors and warnings
+**Lightweight monitoring for your tmux status line**
 
 ![tmux-top sample](https://raw.githubusercontent.com/TomasTomecek/tmux-top/master/docs/tmux_top_example.png)
 ![tmux-top sample](https://raw.githubusercontent.com/TomasTomecek/tmux-top/master/docs/tmux_top_example2.png)
 
+## Table of Contents
 
-Installation
-------------
+- [Features](#features)
+- [Quick Start](#quick-start)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Advanced: Templates](#advanced-templates)
+- [Similar Projects](#similar-projects)
+- [License](#license)
 
-This tool is written in [Go](http://golang.org/). You have to compile it yourself -- there are no binaries being provided.
+## Features
 
-[This is how you can setup your Go environment](http://golang.org/doc/install).
+- **Load Average** — System load (1, 5, 15 minute averages)
+- **Memory** — RAM usage with customizable thresholds
+- **Network** — Interface stats with bandwidth per second
+- **Disk** — Filesystem usage and availability ✨ NEW in 1.0!
+- **I/O** — Disk read/write statistics
+- **Sensors** — CPU/system temperatures from hwmon
+- **Journal** — systemd journal error monitoring ✨ NEW in 1.0!
+- **Go Templates** — Flexible formatting for sensors, disk, and journal
+- **Color Intervals** — Automatic color coding based on thresholds
+- **Zero Config** — Sensible defaults, override only what you need
 
-#### Supported platforms
+## Quick Start
 
- * linux
-
-### Go distribution
-
-```
-$ go get github.com/TomasTomecek/tmux-top/cmd/tmux-top
-```
-
-When the command succeeds, `tmux-top` binary is placed in directory `${GOPATH}/bin`.
-
-
-### Manual installation
-
-```
-$ git clone https://github.com/TomasTomecek/tmux-top.git
-```
-
-Let's install dependencies now:
-
-```
-$ go get github.com/urfave/cli
-```
-
-We can compile and install now:
-
-```
-$ make
-$ sudo make install
+Install:
+```bash
+go install github.com/TomasTomecek/tmux-top/cmd/tmux-top@latest
 ```
 
-Usage
------
+Add to tmux:
+```bash
+tmux set -g status-right "#(tmux-top m) :: #(tmux-top l)"
+```
 
- 1. `tmux-top load` — load of your workstation
- 2. `tmux-top mem` — actual memry usage and total memory
- 3. `tmux-top net` — network statistics: IP address, network interface and current bandwidth
- 4. `tmux-top io` — I/O statistics: current reads and writes
- 5. `tmux-top disk` — disk usage statistics
- 6. `tmux-top sensors` — show sensor stats (temperature)
- 7. `tmux-top journal` — systemd journal error and warning counts
+Done! You'll see memory usage and load average in your tmux status bar.
 
+## Requirements
 
-Configuration
--------------
+- **Go**: 1.21 or later (for building from source)
+- **OS**: Linux (uses `/proc`, `/sys` filesystems)
+- **Optional**: systemd/journalctl (for `journal` command)
+- **Optional**: lm-sensors (for `sensors` command)
 
-[This json](https://github.com/TomasTomecek/tmux-top/blob/master/conf/default_json.go) contains default configuration. If you want to change something, just override the json and store it in `~/.tmux-top`. You can change whatever you want. If the value is not found in your configuration file, it's loaded from default one.
+## Installation
 
-Your configuration may look like this:
+### Using go install (Recommended)
+
+```bash
+go install github.com/TomasTomecek/tmux-top/cmd/tmux-top@latest
+```
+
+Binary will be installed to `$(go env GOPATH)/bin/tmux-top`.
+
+Make sure `$(go env GOPATH)/bin` is in your `PATH`:
+```bash
+export PATH="$(go env GOPATH)/bin:$PATH"
+```
+
+### From Source
+
+```bash
+git clone https://github.com/TomasTomecek/tmux-top.git
+cd tmux-top
+make
+sudo make install
+```
+
+This installs the binary to `/usr/bin/tmux-top`.
+
+## Usage
+
+### Basic Commands
+
+| Command | Alias | Description | Example Output |
+|---------|-------|-------------|----------------|
+| `load` | `l` | System load averages | `0.5 1.2 0.8` |
+| `mem` | `m` | Memory usage | `8.2G/16G` |
+| `net` | `n` | Network statistics | `W:192.168.1.5 ↓2.1M ↑0.5M` |
+| `io` | `i` | I/O statistics | `sda:↓1.2M ↑0.3M` |
+| `disk` | `d` | Disk usage | `/: 45% (250G free)` |
+| `sensors` | `s` | Temperature sensors | `Temp: 52 53 51` |
+| `journal` | `j` | Journal error counts | `J 13` (colored) |
+
+**Examples:**
+```bash
+# System load
+tmux-top load
+tmux-top l
+
+# Memory usage
+tmux-top mem
+tmux-top m
+
+# Network stats
+tmux-top net
+tmux-top n
+
+# Journal errors (last hour)
+tmux-top journal --timeframe=1h
+tmux-top j -t 5m
+```
+
+### Tmux Integration
+
+**Simple setup:**
+```bash
+tmux set -g status-right "#(tmux-top m) :: #(tmux-top l)"
+```
+
+**Full monitoring:**
+```bash
+tmux set -g status-left "#(tmux-top n)"
+tmux set -g status-right "#(tmux-top m) :: #(tmux-top l) :: #(tmux-top j) :: #(tmux-top s)"
+```
+
+**With custom refresh interval:**
+```bash
+tmux set -g status-interval 5
+tmux set -g status-right "#(tmux-top m) :: #(tmux-top l)"
+```
+
+**Persistent configuration** (add to `~/.tmux.conf`):
+```bash
+set -g status-interval 5
+set -g status-left "#(tmux-top n)"
+set -g status-right "#(tmux-top m) #[fg=white]:: #(tmux-top l) #[fg=white]:: #(tmux-top j)"
+```
+
+Layout inspiration from [this blog post](http://zanshin.net/2013/09/05/my-tmux-configuration/).
+
+## Configuration
+
+Configuration is optional. tmux-top works with sensible defaults out of the box.
+
+### Configuration File
+
+Create `~/.tmux-top` to override defaults. Only specify what you want to change.
+
+**Full default configuration:** [conf/default_json.go](https://github.com/TomasTomecek/tmux-top/blob/master/conf/default_json.go)
+
+### Example: Custom Network Interface Colors
 
 ```json
 {
   "net": {
     "interfaces": {
-      "enp0s25": {
-        "alias": "E",
-        "label_color_fg": "white",
-        "label_color_bg": "default",
-        "address_color_fg": "colour4",
-        "address_color_bg": "default"
-      },
-      "enp5s0": {
-        "alias": "E",
-        "label_color_fg": "white",
-        "label_color_bg": "default",
-        "address_color_fg": "colour4",
-        "address_color_bg": "default"
-      },
       "wlp3s0": {
         "alias": "W",
         "label_color_fg": "white",
@@ -100,135 +164,226 @@ Your configuration may look like this:
         "address_color_fg": "green",
         "address_color_bg": "default"
       },
+      "enp0s25": {
+        "alias": "E",
+        "label_color_fg": "white",
+        "address_color_fg": "colour4"
+      },
       "tun0": {
         "alias": "V",
-        "label_color_fg": "white",
-        "label_color_bg": "default",
-        "address_color_fg": "colour3",
-        "address_color_bg": "default"
+        "address_color_fg": "colour3"
       }
     }
-  },
-  "sensors": {
-    "template": "{{range $i, $device := .Devices}}{{if eq $device.Name \"coretemp\"}}{{range $j, $e := .Stats}}{{if gt .CurrentTemp 50.0}}{{tmux_display \"default\" \"colour1\" $e.CurrentTemp}}{{else if gt $e.CurrentTemp 60.0}}{{tmux_display \"default\" \"colour14\" $e.CurrentTemp}}{{end}} {{end}}{{end}}{{end}}"
   }
 }
 ```
 
-and tmux configuration:
+### Example: Custom Temperature Threshold
 
-```shell
-$ tmux set -g status-left "#(tmux-top n)"
-$ tmux set -g status-right "#(tmux-top m) #[fg=white]:: #(tmux-top l) #[fg=white]:: #(tmux-top j)"
+```json
+{
+  "sensors": {
+    "template": "{{range $i, $device := .Devices}}{{if eq $device.Name \"coretemp\"}}{{if gt $device.HighValue 70.0}}🔥 {{range $j, $e := $device.Stats}}{{$e.CurrentTemp}} {{end}}{{end}}{{end}}{{end}}"
+  }
+}
 ```
 
-Layout inspiration is coming from [this blog post](http://zanshin.net/2013/09/05/my-tmux-configuration/ ).
+### Example: Custom Journal Error Intervals
 
-
-Sensors
--------
-
-With `sensors` command, I am trying to pursue a new design of `tmux-top`,
-utilizing [Go templates](https://golang.org/pkg/text/template/). The idea is
-that `tmux-top` will just gather the data and offer it to you as Go structs
-which you can easily utilize and display by writing a Go template. There will
-be a sensible default.
-
-You can easily print what data is available to you:
-```
-$ tmux-top sensors --format '{{.|printf "%#v"}}'
-sens.SensorsStats{Devices:[]sens.DeviceStat{sens.DeviceStat{Name:"acpitz", LowValue:48, HighValue:48, Stats:[]sens.TemperatureStat{sens.TemperatureStat{Label:"", CurrentTemp:48}}}, sens.DeviceStat{Name:"", LowValue:1e+06, HighValue:-100, Stats:[]sens.TemperatureStat{}}, sens.DeviceStat{Name:"pch_wildcat_point", LowValue:48.5, HighValue:48.5, Stats:[]sens.TemperatureStat{sens.TemperatureStat{Label:"", CurrentTemp:48.5}}}, sens.DeviceStat{Name:"iwlwifi", LowValue:41, HighValue:41, Stats:[]sens.TemperatureStat{sens.TemperatureStat{Label:"", CurrentTemp:41}}}, sens.DeviceStat{Name:"coretemp", LowValue:52, HighValue:55, Stats:[]sens.TemperatureStat{sens.TemperatureStat{Label:"Package id 0", CurrentTemp:55}, sens.TemperatureStat{Label:"Core 0", CurrentTemp:52}, sens.TemperatureStat{Label:"Core 1", CurrentTemp:55}}}}}
+```json
+{
+  "journal": {
+    "intervals": [
+      {"to": "1", "bg_color": "default", "fg_color": "green"},
+      {"from": "1", "to": "5", "bg_color": "default", "fg_color": "yellow"},
+      {"from": "5", "to": "10", "bg_color": "yellow", "fg_color": "black"},
+      {"from": "10", "bg_color": "red", "fg_color": "white"}
+    ]
+  }
+}
 ```
 
-We can see, there is a struct `SensorsStats` and it contains array of structs
-`DeviceStat`. Let's see what sensors are available:
-```
-$ tmux-top sensors --format '{{range $i, $device := .Devices}}{{.Name}}: {{.|printf "%#v\n"}}{{end}}'
-acpitz: sens.DeviceStat{Name:"acpitz", LowValue:45, HighValue:45, Stats:[]sens.TemperatureStat{sens.TemperatureStat{Label:"", CurrentTemp:45}}}
-: sens.DeviceStat{Name:"", LowValue:1e+06, HighValue:-100, Stats:[]sens.TemperatureStat{}}
-pch_wildcat_point: sens.DeviceStat{Name:"pch_wildcat_point", LowValue:48, HighValue:48, Stats:[]sens.TemperatureStat{sens.TemperatureStat{Label:"", CurrentTemp:48}}}
-iwlwifi: sens.DeviceStat{Name:"iwlwifi", LowValue:42, HighValue:42, Stats:[]sens.TemperatureStat{sens.TemperatureStat{Label:"", CurrentTemp:42}}}
-coretemp: sens.DeviceStat{Name:"coretemp", LowValue:46, HighValue:46, Stats:[]sens.TemperatureStat{sens.TemperatureStat{Label:"Package id 0", CurrentTemp:46}, sens.TemperatureStat{Label:"Core 0", CurrentTemp:46}, sens.TemperatureStat{Label:"Core 1", CurrentTemp:46}}}
+### Available Configuration Options
+
+- **Intervals** — Color thresholds for load, memory, disk, journal
+- **Templates** — Go templates for sensors, disk, journal output
+- **Interface aliases** — Short names for network interfaces
+- **Colors** — tmux color codes (fg/bg) for all elements
+
+## Advanced: Templates
+
+The `sensors`, `disk`, and `journal` commands support Go templates for custom output formatting. This allows complete control over what data is displayed and how it's formatted.
+
+### Sensors
+
+The `sensors` command provides flexible temperature monitoring using Go templates. The template receives a `SensorsStats` struct containing data from `/sys/class/hwmon/*`.
+
+**Inspect available data:**
+```bash
+tmux-top sensors --format '{{.|printf "%#v"}}'
 ```
 
-Each `DeviceStat` has fields `Name` (might not be populated though, `LowValue`,
-`HighValue` (so you can do conditions) and array of actual values, available as
-`Stats`. Let's see a full example:
+**Output:**
 ```
-$ tmux-top sensors --format '{{range $i, $device := .Devices}}{{.Name}}: {{range $j, $stat := .Stats}}{{.CurrentTemp}} {{end}}{{printf "\n"}}{{end}}'
+sens.SensorsStats{Devices:[]sens.DeviceStat{sens.DeviceStat{Name:"acpitz", LowValue:48, HighValue:48, Stats:[]sens.TemperatureStat{...}}}}
+```
+
+**List available sensors:**
+```bash
+tmux-top sensors --format '{{range $i, $device := .Devices}}{{.Name}}: {{.|printf "%#v\n"}}{{end}}'
+```
+
+**Output:**
+```
+acpitz: sens.DeviceStat{Name:"acpitz", LowValue:45, HighValue:45, Stats:...}
+pch_wildcat_point: sens.DeviceStat{Name:"pch_wildcat_point", LowValue:48, HighValue:48, Stats:...}
+iwlwifi: sens.DeviceStat{Name:"iwlwifi", LowValue:42, HighValue:42, Stats:...}
+coretemp: sens.DeviceStat{Name:"coretemp", LowValue:46, HighValue:46, Stats:...}
+```
+
+**Data structure:**
+- `Devices` — Array of `DeviceStat` structs
+- `DeviceStat` fields:
+  - `Name` — Sensor name (may be empty)
+  - `LowValue` — Minimum temperature across all readings
+  - `HighValue` — Maximum temperature across all readings
+  - `Stats` — Array of `TemperatureStat` with individual readings
+- `TemperatureStat` fields:
+  - `Label` — Reading label (e.g., "Core 0", "Package id 0")
+  - `CurrentTemp` — Current temperature value
+
+**Display all temperatures:**
+```bash
+tmux-top sensors --format '{{range $i, $device := .Devices}}{{.Name}}: {{range $j, $stat := .Stats}}{{.CurrentTemp}} {{end}}{{printf "\n"}}{{end}}'
+```
+
+**Output:**
+```
 acpitz: 44
-:
 pch_wildcat_point: 46.5
 iwlwifi: 42
 coretemp: 45 45 44
 ```
 
-The default is:
+**Default template** (shows CPU temp only when > 50°C):
+```bash
+tmux-top sensors --format '{{range $i, $device := .Devices}}{{if eq .Name "coretemp"}}{{if gt $device.HighValue 50.0}}Temp: {{range $j, $e := $device.Stats}}{{$e.CurrentTemp}} {{end}}{{end}}{{end}}{{end}}'
 ```
-$ tmux-top sensors --format '{{range $i, $device := .Devices}}{{if eq .Name "coretemp"}}{{if gt $device.HighValue 50.0}}Temp: {{range $j, $e := $device.Stats}}{{$e.CurrentTemp}} {{end}}{{end}}{{end}}{{end}}'
+
+**Output:**
+```
 Temp: 67 67 67
 ```
 
-It prints temperature if it's higher than 50 °C and it select only sensor on CPU.
-
-There is also one helper function available to print values in tmux syntax:
-```
-{{tmux_display "default" "colour14" .CurrentTemp}}
+**With tmux color formatting:**
+```bash
+tmux-top sensors --format '{{range .Devices}}{{if eq .Name "coretemp"}}{{range .Stats}}{{if gt .CurrentTemp 70.0}}{{tmux_display "default" "red" .CurrentTemp}}{{else}}{{tmux_display "default" "green" .CurrentTemp}}{{end}} {{end}}{{end}}{{end}}'
 ```
 
-which would yield
-```
-#[bg=default,fg=colour14]65#[bg=default,fg=default]
-```
+### Journal
 
-all of the data is coming from `/sys/class/hwmon/*`.
+The `journal` command monitors systemd journal for errors, warnings, and critical messages.
 
-
-Journal
--------
-
-The `journal` command monitors systemd journal for errors, warnings, and critical messages. It uses Go templates like the sensors command, allowing flexible output formatting.
-
-The command accepts a `--timeframe` option to specify the time window for error aggregation:
-```
-$ tmux-top journal --timeframe=1h   # Last hour (default)
-$ tmux-top journal --timeframe=5m   # Last 5 minutes
+**Data structure:**
+```bash
+tmux-top journal --format='{{.|printf "%#v"}}'
 ```
 
-You can see the available data structure:
+**Output:**
 ```
-$ tmux-top journal --format='{{.|printf "%#v"}}'
 journal.JournalStats{TimeFrame:"1h", ErrorCount:13, WarningCount:0, CriticalCount:437, TotalCount:450}
 ```
 
-The data structure provides:
-- `TimeFrame` — the time window being monitored
-- `ErrorCount` — number of error-level messages (priority 3)
-- `WarningCount` — number of warning-level messages (priority 4)
-- `CriticalCount` — number of critical/alert/emergency messages (priorities 0-2)
-- `TotalCount` — sum of all error, warning, and critical messages
+**Fields:**
+- `TimeFrame` — Time window being monitored
+- `ErrorCount` — Number of error-level messages (priority 3)
+- `WarningCount` — Number of warning-level messages (priority 4)
+- `CriticalCount` — Number of critical/alert/emergency messages (priorities 0-2)
+- `TotalCount` — Sum of all error, warning, and critical messages
 
-Simple example showing only errors and warnings:
+**Timeframe options:**
+```bash
+tmux-top journal --timeframe=1h   # Last hour (default)
+tmux-top journal --timeframe=5m   # Last 5 minutes
+tmux-top journal --timeframe=24h  # Last 24 hours
+tmux-top journal -t 1h            # Short form
 ```
-$ tmux-top journal --format='{{if gt .ErrorCount 0}}E:{{.ErrorCount}} {{end}}{{if gt .WarningCount 0}}W:{{.WarningCount}}{{end}}'
+
+**Compact error display:**
+```bash
+tmux-top journal --format='{{if gt .ErrorCount 0}}E:{{.ErrorCount}} {{end}}{{if gt .WarningCount 0}}W:{{.WarningCount}}{{end}}'
+```
+
+**Output:**
+```
 E:13
 ```
 
-The default template shows all counts when present:
+**Detailed display:**
+```bash
+tmux-top journal --format='{{if gt .ErrorCount 0}}Errors: {{.ErrorCount}}{{end}} {{if gt .WarningCount 0}}Warnings: {{.WarningCount}}{{end}} ({{.TimeFrame}})'
 ```
-$ tmux-top journal --format='{{if gt .ErrorCount 0}}Errors: {{.ErrorCount}}{{end}} {{if gt .WarningCount 0}}Warnings: {{.WarningCount}}{{end}} ({{.TimeFrame}})'
+
+**Output:**
+```
 Errors: 13 (1h)
 ```
 
-Without the `--format` flag, the command displays a simple colored indicator based on error count intervals defined in the configuration.
+**Conditional formatting:**
+```bash
+tmux-top journal --format='{{if gt .TotalCount 0}}⚠ {{.TotalCount}} issues{{else}}✓ OK{{end}}'
+```
 
-The journal command requires systemd and journalctl. If they're unavailable, it gracefully displays "Journal unavailable".
+**Without `--format` flag:** Displays a simple colored indicator based on error count intervals defined in configuration.
 
+**Requirements:** systemd and journalctl. If unavailable, displays "Journal unavailable".
 
-Other goodies for tmux
-----------------------
+### Disk
 
- * [tmux-mem-cpu-load](https://github.com/thewtex/tmux-mem-cpu-load)
- * [powerline](https://github.com/powerline/powerline)
- * [rainbarf](https://github.com/creaktive/rainbarf)
- * [Battery](https://github.com/Goles/Battery)
+The `disk` command can also use templates for custom output formatting.
+
+**Data structure:**
+```bash
+tmux-top disk --format='{{.|printf "%#v"}}'
+```
+
+**Custom format example:**
+```bash
+tmux-top disk --format='{{range .Mounts}}{{.MountPoint}}: {{printf "%.1f" .UsedPercent}}% {{end}}'
+```
+
+### Available Template Functions
+
+- **`tmux_display "bg" "fg" value`** — Format value with tmux color codes
+  ```
+  {{tmux_display "default" "colour14" .CurrentTemp}}
+  ```
+  Yields: `#[bg=default,fg=colour14]65#[bg=default,fg=default]`
+
+- **`replace "old" "new" string`** — String replacement
+
+- **Standard Go template functions**: `if`, `range`, `gt`, `lt`, `eq`, `printf`, etc.
+  - See [Go template documentation](https://golang.org/pkg/text/template/)
+
+### Development
+
+**Run tests:**
+```bash
+make test
+```
+
+**Build:**
+```bash
+make
+```
+
+## Similar Projects
+
+- [tmux-mem-cpu-load](https://github.com/thewtex/tmux-mem-cpu-load)
+- [powerline](https://github.com/powerline/powerline)
+- [rainbarf](https://github.com/creaktive/rainbarf)
+- [Battery](https://github.com/Goles/Battery)
+
+## License
+
+GNU General Public License v2.0 - see [LICENSE](LICENSE) file for details.

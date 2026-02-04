@@ -13,7 +13,7 @@
 # 1. We need to set version
 # 2. And cannot set commit macro
 # 3. Place version before gometa
-Version:        0.1.1
+Version:        1.0.0
 %gometa
 
 Name:           tmux-top
