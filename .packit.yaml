@@ -1,6 +1,13 @@
-upstream_package_name: tmux-top
-downstream_package_name: tmux-top
 specfile_path: tmux-top.spec
+
+upstream_package_name: tmux-top
+upstream_project_url: https://github.com/TomasTomecek/tmux-top
+downstream_package_name: tmux-top
+
+srpm_build_deps:
+- "go-vendor-tools"
+- "golang-bin"
+- "askalono-cli"
 jobs:
 - job: copr_build
   targets:
@@ -14,6 +21,12 @@ jobs:
   trigger: release
   dist_git_branches:
   - fedora-all
+
+- job: pull_from_upstream
+  trigger: release
+  dist_git_branches:
+  - fedora-all
+
 - job: koji_build
   trigger: commit
   allowed_pr_authors: ["ttomecek", "packit"]
@@ -23,3 +36,18 @@ jobs:
   trigger: commit
   dist_git_branches:
   - fedora-branched
+
+actions:
+  post-modifications:
+    # https://fedora.gitlab.io/sigs/go/go-vendor-tools/scenarios/#manual-update
+    - |
+      sh -xeuc "
+        export GOTOOLCHAIN=auto
+        go_vendor_archive create --config go-vendor-tools.toml tmux-top.spec
+        go_vendor_license \
+          --config go-vendor-tools.toml \
+          --path tmux-top.spec \
+          report \
+          --verify-spec
+      "
+create_sync_note: false
