@@ -61,17 +61,8 @@ func getMountPoints() (map[string]string, error) {
 
 		device := fields[0]
 		mountpoint := fields[1]
-		fstype := fields[2]
 
-		// Skip virtual filesystems
-		if strings.HasPrefix(device, "/dev/") &&
-			fstype != "tmpfs" &&
-			fstype != "devtmpfs" &&
-			fstype != "sysfs" &&
-			fstype != "proc" &&
-			fstype != "devpts" {
-			mounts[mountpoint] = device
-		}
+		mounts[mountpoint] = device
 	}
 
 	return mounts, scanner.Err()

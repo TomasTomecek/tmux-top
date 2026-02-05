@@ -115,6 +115,11 @@ func getSensorsStats() SensorsStats {
 	}
 	entries, err := ioutil.ReadDir(BASE_PATH)
 	if err != nil {
+		// If the hwmon directory doesn't exist (e.g., on s390x or in containers),
+		// return empty stats instead of crashing
+		if os.IsNotExist(err) {
+			return s
+		}
 		panic(err)
 	}
 	// fd, os.FileInfo
