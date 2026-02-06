@@ -42,7 +42,7 @@ actions:
     # https://fedora.gitlab.io/sigs/go/go-vendor-tools/scenarios/#manual-update
     - |
       sh -xeuc "
-        export GOTOOLCHAIN=auto
+        export GOTOOLCHAIN=local+auto
         go_vendor_archive create --config go-vendor-tools.toml tmux-top.spec
         go_vendor_license \
           --config go-vendor-tools.toml \
