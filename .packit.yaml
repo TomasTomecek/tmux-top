@@ -20,7 +20,7 @@ jobs:
 - job: propose_downstream
   trigger: release
   dist_git_branches:
-  - fedora-all
+  - fedora-rawhide
 
 - job: pull_from_upstream
   trigger: release
