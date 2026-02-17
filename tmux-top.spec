@@ -3,8 +3,8 @@
 
 # https://github.com/TomasTomecek/tmux-top
 %global goipath         github.com/TomasTomecek/tmux-top
-Version:                1.0.2
-%global tag             1.0.2
+Version:                1.0.3
+%global tag             1.0.3
 
 %gometa -L -f
 
