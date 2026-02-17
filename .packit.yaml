@@ -37,11 +37,13 @@ jobs:
   dist_git_branches:
   - fedora-branched
 
+create_sync_note: false
 actions:
   post-modifications:
     # https://fedora.gitlab.io/sigs/go/go-vendor-tools/scenarios/#manual-update
+    # https://github.com/fido-device-onboard/go-fdo-server/blob/main/.packit.yaml
     - |
-      sh -xeuc "
+      bash -xeuc "
         export GOTOOLCHAIN=local+auto
         go_vendor_archive create --config go-vendor-tools.toml tmux-top.spec
         go_vendor_license \
@@ -49,5 +51,8 @@ actions:
           --path tmux-top.spec \
           report \
           --verify-spec
+        if [ -n "${PACKIT_DOWNSTREAM_REPO}" ]; then
+          cp "${PACKIT_UPSTREAM_REPO}/tmux-top-${PACKIT_PROJECT_VERSION}.tar.gz" "${PACKIT_DOWNSTREAM_REPO}"
+          cp "${PACKIT_UPSTREAM_REPO}/tmux-top-${PACKIT_PROJECT_VERSION}-vendor.tar.bz2" "${PACKIT_DOWNSTREAM_REPO}"
+        fi
       "
-create_sync_note: false
